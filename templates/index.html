@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IP 地址</title>
+    <!-- import favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'favicon_io/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon_io/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon_io/favicon-16x16.png' %}">
+    <link rel="icon" type="image/vnd.microsoft.icon" sizes="48x48" href="{% static 'favicon_io/favicon.ico' %}">
+    <link rel="manifest" href="{% static 'favicon_io/site.webmanifest' %}">
+    <!-- import css -->
+    <link rel="stylesheet" type="text/css" href="{% static 'reset.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+</head>
+
+<body>
+    <main>
+        <div class="container">
+            <div class="item">{{ ip }}</div>
+            <div class="item">{{ province }}</div>
+            <div class="item">{{ city }}</div>
+            <div class="item">{{ isp }}</div>
+        </div>
+    </main>
+    <footer>
+        <a href="../json/">返回 JSON</a> |
+        版权所有 &copy; 2022 <a href="https://gitee.com/songyustudio/">松鱼工作室</a>. 保留所有权利.
+    </footer>
+</body>
+
+</html>

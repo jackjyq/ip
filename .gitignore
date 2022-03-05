@@ -1,10 +1,17 @@
+# Django Files
+/venv/
+__pycache__/
+/static/
+db.sqlite3
+
 # General
 .DS_Store
 .AppleDouble
 .LSOverride
 
 # Icon must end with two \r
-Icon
+Icon
+
 
 # Thumbnails
 ._*
