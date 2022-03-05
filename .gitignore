@@ -1,8 +1,6 @@
 # Django Files
 /venv/
 __pycache__/
-/static/
-db.sqlite3
 
 # General
 .DS_Store
