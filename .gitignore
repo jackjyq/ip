@@ -1,6 +1,7 @@
 # Django Files
 /venv/
 __pycache__/
+/collected/
 
 # General
 .DS_Store
