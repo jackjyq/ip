@@ -7,11 +7,11 @@ from django.core.wsgi import get_wsgi_application
 from django.core.management import execute_from_command_line
 from django.core.handlers.wsgi import WSGIRequest
 from django.shortcuts import render
-from django.conf.urls.static import static
+from whitenoise import WhiteNoise
 
 BASE_DIR = os.path.dirname(__file__)
 settings.configure(
-    DEBUG=False,
+    DEBUG=True,
     SECRET_KEY=r"uZ4HrjtDcBRiuEj9x#DPKXS&Z^F3rH%aJR82J*Au7^fnqvWbqd@5yzaz9ccu#N7T",
     ROOT_URLCONF=__name__,
     ALLOWED_HOSTS=["*"],
@@ -31,7 +31,6 @@ settings.configure(
     ],
     STATICFILES_DIRS=(os.path.join(BASE_DIR, "static/"),),
     STATIC_URL="/static/",
-    STATIC_ROOT=os.path.join(BASE_DIR, "deploy/"),
 )
 
 logger = logging.getLogger(__name__)
@@ -80,6 +79,7 @@ def get_ip_location(ip: str) -> Dict:
 
 urlpatterns = [path("", get_index), path("json/", get_json)]
 application = get_wsgi_application()
+application = WhiteNoise(application, root="./static", prefix="static/")
 
 if __name__ == "__main__":
     execute_from_command_line(sys.argv)
