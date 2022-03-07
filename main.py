@@ -1,3 +1,4 @@
+from ipaddress import ip_address
 import sys, requests, logging, os
 from typing import Dict
 from django.http import HttpResponse, JsonResponse
@@ -37,14 +38,24 @@ logger = logging.getLogger(__name__)
 
 
 def get_index(request: WSGIRequest) -> HttpResponse:
-    ip_address = request.META.get("REMOTE_ADDR", None)
+    ip_address = get_ip_address(request)
     ip_location = get_ip_location(ip_address)
     return render(request, "index.html", ip_location)
 
 
 def get_json(request: WSGIRequest) -> JsonResponse:
-    ip = request.META.get("REMOTE_ADDR", None)
-    return JsonResponse(get_ip_location(ip))
+    ip_address = get_ip_address(request)
+    ip_location = get_ip_location(ip_address)
+    return JsonResponse(ip_location)
+
+
+def get_ip_address(request: WSGIRequest) -> str:
+    # https://stackoverflow.com/a/5976065
+    if x_forwarded_for := request.META.get("HTTP_X_FORWARDED_FOR"):
+        ip_address = x_forwarded_for.split(",")[-1].strip()
+    else:
+        ip_address = request.META.get("REMOTE_ADDR")
+    return ip_address
 
 
 def get_ip_location(ip: str) -> Dict:
