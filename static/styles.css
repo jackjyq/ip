@@ -4,54 +4,54 @@
 /* font-family
     https://zenozeng.github.io/fonts.css/ */
 body {
-    font-family: -apple-system, "Noto Sans", "Helvetica Neue", Helvetica, "Nimbus Sans L", Arial,
-     "Liberation Sans", "PingFang SC", "Hiragino Sans GB", "Noto Sans CJK SC", 
-     "Source Han Sans SC", "Source Han Sans CN", "Microsoft YaHei", "Wenquanyi Micro Hei", 
-     "WenQuanYi Zen Hei", "ST Heiti", SimHei, "WenQuanYi Zen Hei Sharp", sans-serif;
+  font-family: -apple-system, "Noto Sans", "Helvetica Neue", Helvetica,
+    "Nimbus Sans L", Arial, "Liberation Sans", "PingFang SC", "Hiragino Sans GB",
+    "Noto Sans CJK SC", "Source Han Sans SC", "Source Han Sans CN",
+    "Microsoft YaHei", "Wenquanyi Micro Hei", "WenQuanYi Zen Hei", "ST Heiti",
+    SimHei, "WenQuanYi Zen Hei Sharp", sans-serif;
 }
 
 a {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 div.container {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    font-size: min(8.3vw, 8.3vh);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  font-size: min(8.3vw, 8.3vh);
 }
 
 div.item {
-    flex-grow: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow-x: auto;
-    white-space:nowrap;
-
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-x: auto;
+  white-space: nowrap;
 }
 
 div.item:nth-of-type(1) {
-    background-color: #008BF8;
-    color: white;
+  background-color: #008bf8;
+  color: white;
 }
 
 div.item:nth-of-type(2) {
-    background-color: #F5B700;
-    color: black;
+  background-color: #f5b700;
+  color: black;
 }
 
 div.item:nth-of-type(3) {
-    background-color: #DC0073;
-    color: white;
+  background-color: #dc0073;
+  color: white;
 }
 
 div.item:nth-of-type(4) {
-    background-color: #89FC00;
-    color: black;
+  background-color: #89fc00;
+  color: black;
 }
 
 footer {
-    text-align: center;
-    padding: 1em 0;
+  text-align: center;
+  padding: 1em 0;
 }
