@@ -1,5 +1,5 @@
 /* color palette
-    https://coolors.co/dc253e-99dc25-dc8625-25dcc3-6825dc */
+    https://coolors.co/f8f9fa-e9ecef-dee2e6-ced4da-adb5bd-6c757d-495057-343a40-212529 */
 
 /* font-family
     https://zenozeng.github.io/fonts.css/ */
@@ -34,27 +34,27 @@ div.item {
 }
 
 div.item:nth-of-type(1) {
-  background-color: #dc253e;
-  color: white;
+  background-color: #adb5bd;
+  color: black;
 }
 
 div.item:nth-of-type(2) {
-  background-color: #99dc25;
+  background-color: #ced4da;
   color: black;
 }
 div.item:nth-of-type(3) {
-  background-color: #dc8625;
-  color: white;
+  background-color: #dee2e6;
+  color: black;
 }
 
 div.item:nth-of-type(4) {
-  background-color: #25dcc3;
+  background-color: #e9ecef;
   color: black;
 }
 
 div.item:nth-of-type(5) {
-  background-color: #6825dc;
-  color: white;
+  background-color: #f8f9fa;
+  color: black;
 }
 
 footer {
