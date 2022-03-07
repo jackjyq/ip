@@ -1,5 +1,5 @@
 /* color palette
-    https://coolors.co/008bf8-f5b700-89fc00-dc0073 */
+    https://coolors.co/dc253e-99dc25-dc8625-25dcc3-6825dc */
 
 /* font-family
     https://zenozeng.github.io/fonts.css/ */
@@ -19,7 +19,9 @@ div.container {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  font-size: min(8.3vw, 8.3vh);
+  /* 8vh guranteen a at least 1.5 line height
+    12vw guranteen enough space to show 255.255.255.255*/
+  font-size: min(8vh, 12vw);
 }
 
 div.item {
@@ -32,26 +34,31 @@ div.item {
 }
 
 div.item:nth-of-type(1) {
-  background-color: #008bf8;
+  background-color: #dc253e;
   color: white;
 }
 
 div.item:nth-of-type(2) {
-  background-color: #f5b700;
+  background-color: #99dc25;
   color: black;
 }
-
 div.item:nth-of-type(3) {
-  background-color: #dc0073;
+  background-color: #dc8625;
   color: white;
 }
 
 div.item:nth-of-type(4) {
-  background-color: #89fc00;
+  background-color: #25dcc3;
   color: black;
+}
+
+div.item:nth-of-type(5) {
+  background-color: #6825dc;
+  color: white;
 }
 
 footer {
   text-align: center;
-  padding: 1em 0;
+  font-size: 0.8rem;
+  padding: 1rem 0;
 }
