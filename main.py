@@ -58,7 +58,7 @@ def get_ip_address(request: WSGIRequest) -> str:
     # to get the ip address even if behind nginx
     # ref:  https://stackoverflow.com/a/5976065
     if x_forwarded_for := request.META.get("HTTP_X_FORWARDED_FOR"):
-        ip_address = x_forwarded_for.split(",")[0]
+        ip_address = x_forwarded_for.split(",")[-1].strip()
     else:
         ip_address = request.META.get("REMOTE_ADDR")
     return ip_address
