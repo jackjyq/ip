@@ -17,7 +17,7 @@ BASE_DIR = os.path.dirname(__file__)
 searcher = Ip2Region("./ip2region/ip2region.db")
 
 settings.configure(
-    DEBUG=True,
+    DEBUG=False,
     SECRET_KEY=r"uZ4HrjtDcBRiuEj9x#DPKXS&Z^F3rH%aJR82J*Au7^fnqvWbqd@5yzaz9ccu#N7T",
     ROOT_URLCONF=__name__,
     ALLOWED_HOSTS=["*"],
