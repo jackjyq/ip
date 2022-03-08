@@ -59,6 +59,8 @@ div.item:nth-of-type(5) {
 
 footer {
   text-align: center;
-  font-size: 0.8rem;
-  padding: 1rem 0;
+  font-size: 0.75rem;
+  color: #808080;
+  line-height: 1.5;
+  padding: 4vh 0;
 }

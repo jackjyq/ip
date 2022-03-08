@@ -34,12 +34,14 @@
     <!-- import css -->
     <link rel="stylesheet" type="text/css" href="{% static 'reset.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}" />
+    <!-- import js -->
+    <script async src="{% static 'script.js' %}"></script>
   </head>
 
   <body>
     <main>
       <div class="container">
-        <div class="item">{{ ip }}</div>
+        <div class="item" id="ip" contenteditable="true">{{ ip }}</div>
         <div class="item">{{ country }}</div>
         <div class="item">{{ province }}</div>
         <div class="item">{{ city }}</div>
@@ -47,7 +49,9 @@
       </div>
     </main>
     <footer>
-      {% if database_name %} Database
+      本机 IP <a href="./">{{ local_ip }}</a>
+      <br />
+      {% if database_name %} 数据源
       <a href="{{ database_href }}">{{ database_name }} </a>
       <br />
       {% endif %} Designed by

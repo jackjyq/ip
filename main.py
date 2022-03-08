@@ -48,20 +48,22 @@ settings.configure(
 
 
 def get_index(request: WSGIRequest) -> HttpResponse:
-    # /?ip=<ipv4 address>
-    # return client IP without query
-    if not (ip_address := request.GET.get("ip")):
-        ip_address = get_ip_address(request)
-    ip_location = get_ip_location(ip_address)
+    local_ip = get_ip_address(request)
+    if not (query_ip := request.GET.get("ip")):
+        query_ip = local_ip
+    ip_location = get_ip_location(query_ip)
     if request.content_type == "application/json":
         return JsonResponse(ip_location)
     else:
+        ip_location["local_ip"] = local_ip
         return render(request, "index.html", ip_location)
 
 
 def get_ip_address(request: WSGIRequest) -> str:
-    # to get the ip address even if behind nginx
-    # ref:  https://stackoverflow.com/a/5976065
+    """to get the client ip address even if behind nginx
+
+    ref:  https://stackoverflow.com/a/5976065
+    """
     if x_forwarded_for := request.META.get("HTTP_X_FORWARDED_FOR"):
         ip_address = x_forwarded_for.split(",")[-1].strip()
     else:
@@ -70,6 +72,7 @@ def get_ip_address(request: WSGIRequest) -> str:
 
 
 def get_ip_location(ip_address: str) -> Dict:
+    """query the ip location"""
     INVALID_IP = "IP 地址错误"
     UNKNOWN_LOCATION = "未知"
     try:
