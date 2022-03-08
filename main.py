@@ -10,15 +10,21 @@ from django.shortcuts import render
 from whitenoise import WhiteNoise
 from ip2region.ip2Region import Ip2Region
 from ipaddress import IPv4Address, AddressValueError
+import geoip2.database
 
 BASE_DIR = os.path.dirname(__file__)
+DEBUG = os.environ.get("DEBUG", False) == "True"
+SECRET_KEY = os.environ.get("SECRET_KEY", os.urandom(32))
 
 # https://github.com/lionsoul2014/ip2region
-searcher = Ip2Region("./ip2region/ip2region.db")
+ip2region_reader = Ip2Region("./ip2region/ip2region.db")
+# https://geoip2.readthedocs.io/en/latest/
+geolite2_reader = geoip2.database.Reader("./GeoLite2/GeoLite2-City.mmdb")
+
 
 settings.configure(
-    DEBUG=False,
-    SECRET_KEY=r"uZ4HrjtDcBRiuEj9x#DPKXS&Z^F3rH%aJR82J*Au7^fnqvWbqd@5yzaz9ccu#N7T",
+    DEBUG=DEBUG,
+    SECRET_KEY=SECRET_KEY,
     ROOT_URLCONF=__name__,
     ALLOWED_HOSTS=["*"],
     MIDDLEWARE_CLASSES=(
@@ -65,34 +71,55 @@ def get_ip_address(request: WSGIRequest) -> str:
 
 
 def get_ip_location(ip_address: str) -> Dict:
-    INVALID_IP_ADDRESS = "IP 地址错误"
-    UNKNOWN_LOCATION_FIELD = "未知"
+    INVALID_IP = "IP 地址错误"
+    UNKNOWN_LOCATION = "未知"
     try:
         IPv4Address(ip_address)
-        ip2region_result = (
-            searcher.btreeSearch(ip_address)["region"].decode().split("|")
-        )
-        ip2region_result = [
-            UNKNOWN_LOCATION_FIELD if _ == "0" else _ for _ in ip2region_result
-        ]
-        ip_location = {
-            "ip": ip_address,
-            "country": ip2region_result[0],
-            "region": ip2region_result[1],
-            "province": ip2region_result[2],
-            "city": ip2region_result[3],
-            "isp": ip2region_result[4],
-        }
     except AddressValueError:
-        ip_location = {
+        return {
             "ip": ip_address,
-            "country": INVALID_IP_ADDRESS,
-            "region": INVALID_IP_ADDRESS,
-            "province": INVALID_IP_ADDRESS,
-            "city": INVALID_IP_ADDRESS,
-            "isp": INVALID_IP_ADDRESS,
+            "country": INVALID_IP,
+            "region": INVALID_IP,
+            "province": INVALID_IP,
+            "city": INVALID_IP,
+            "isp": INVALID_IP,
         }
-    return ip_location
+    # use ip2region database to get the country name
+    ip2region_result = (
+        ip2region_reader.btreeSearch(ip_address)["region"].decode().split("|")
+    )
+    ip2region_result = [UNKNOWN_LOCATION if _ == "0" else _ for _ in ip2region_result]
+    ip2region_location = {
+        "ip": ip_address,
+        "country": ip2region_result[0],
+        "region": ip2region_result[1],
+        "province": ip2region_result[2],
+        "city": ip2region_result[3],
+        "isp": ip2region_result[4],
+    }
+    # try GeoLite2 database for ip address that is not in China
+    if ip2region_location["country"] != "中国":
+        try:
+            geolite2_result = geolite2_reader.city(ip_address)
+            geolite2_location = {
+                "ip": ip_address,
+                "country": geolite2_result.country.names.get(
+                    "zh-CN", geolite2_result.country.name
+                ),
+                "region": UNKNOWN_LOCATION,
+                "province": geolite2_result.subdivisions.most_specific.names.get(
+                    "zh-CN", geolite2_result.subdivisions.most_specific.name
+                ),
+                "city": geolite2_result.city.names.get(
+                    "zh-CN", geolite2_result.city.name
+                ),
+                "isp": UNKNOWN_LOCATION,
+            }
+            return geolite2_location
+        except geoip2.errors.AddressNotFoundError:
+            pass
+    # otherwise, fall back to use ip2region database
+    return ip2region_location
 
 
 urlpatterns = [path("", get_index)]

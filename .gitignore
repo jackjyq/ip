@@ -1,7 +1,8 @@
-# Django Files
 /venv/
 __pycache__/
 /.vscode/
+/GeoLite2/
+
 
 # General
 .DS_Store
