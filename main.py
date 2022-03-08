@@ -15,6 +15,7 @@ import geoip2.database
 BASE_DIR = os.path.dirname(__file__)
 DEBUG = os.environ.get("DEBUG", False) == "True"
 SECRET_KEY = os.environ.get("SECRET_KEY", os.urandom(32))
+logger = logging.getLogger(__name__)
 
 # https://github.com/lionsoul2014/ip2region
 ip2region_reader = Ip2Region("./ip2region/ip2region.db")
@@ -44,8 +45,6 @@ settings.configure(
     STATICFILES_DIRS=(os.path.join(BASE_DIR, "static/"),),
     STATIC_URL="/static/",
 )
-
-logger = logging.getLogger(__name__)
 
 
 def get_index(request: WSGIRequest) -> HttpResponse:
@@ -96,6 +95,8 @@ def get_ip_location(ip_address: str) -> Dict:
         "province": ip2region_result[2],
         "city": ip2region_result[3],
         "isp": ip2region_result[4],
+        "database_name": "ip2region",
+        "database_href": "https://gitee.com/lionsoul/ip2region/",
     }
     # try GeoLite2 database for ip address that is not in China
     if ip2region_location["country"] != "中国":
@@ -114,6 +115,8 @@ def get_ip_location(ip_address: str) -> Dict:
                     "zh-CN", geolite2_result.city.name
                 ),
                 "isp": UNKNOWN_LOCATION,
+                "database_name": "GeoLite2",
+                "database_href": "https://www.maxmind.com/",
             }
             return geolite2_location
         except geoip2.errors.AddressNotFoundError:

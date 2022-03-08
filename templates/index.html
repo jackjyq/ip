@@ -47,7 +47,11 @@
       </div>
     </main>
     <footer>
-      Designed by <a href="https://gitee.com/songyustudio/ip">松鱼工作室</a>
+      {% if database_name %} Database
+      <a href="{{ database_href }}">{{ database_name }} </a>
+      <br />
+      {% endif %} Designed by
+      <a href="https://gitee.com/songyustudio/ip">松鱼工作室</a>
     </footer>
   </body>
 </html>
