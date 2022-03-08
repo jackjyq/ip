@@ -29,15 +29,13 @@ curl 'https://ip.jackjyq.com/?ip=114.114.114.114' -H 'Content-Type: application/
 
 ### 初始化
 
-- 我用的是 Python 3.10, 旧版本（3.8+）可能也能运行
-- 不需要安装 mySQL
 - ip2region 数据库较小，因此包含在 Git 仓库里，不用单独下载
 
 ```bash
-python -m virtualenv venv   # 创建虚拟环境
+python3.10 -m virtualenv venv   # 创建虚拟环境
 pip install -r requirements.txt     # 安装依赖
-chmod +x update_GeoLite2.sh
-./update_GeoLite2.sh   # 下载 IP 数据库
+chmod +x download_ip_data.sh
+./download_ip_data.sh   # 下载 IP 数据库
 ```
 
 ### 运行

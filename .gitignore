@@ -1,7 +1,7 @@
 /venv/
 __pycache__/
 /.vscode/
-/GeoLite2/
+/ip_data/
 *.log
 
 

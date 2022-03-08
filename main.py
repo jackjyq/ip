@@ -8,7 +8,7 @@ from django.core.management import execute_from_command_line
 from django.core.handlers.wsgi import WSGIRequest
 from django.shortcuts import render
 from whitenoise import WhiteNoise
-from ip2region.ip2Region import Ip2Region
+from ip2Region import Ip2Region
 from ipaddress import IPv4Address, AddressValueError
 import geoip2.database
 
@@ -31,9 +31,9 @@ logger.addHandler(console)
 
 
 # https://github.com/lionsoul2014/ip2region
-ip2region_reader = Ip2Region("./ip2region/ip2region.db")
+ip2region_reader = Ip2Region("./ip_data/ip2region/ip2region.db")
 # https://geoip2.readthedocs.io/en/latest/
-geolite2_reader = geoip2.database.Reader("./GeoLite2/GeoLite2-City.mmdb")
+geolite2_reader = geoip2.database.Reader("./ip_data/GeoLite2/GeoLite2-City.mmdb")
 
 
 settings.configure(
