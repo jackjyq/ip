@@ -15,6 +15,11 @@ a {
   text-decoration: none;
 }
 
+/* https://www.w3schools.com/howto/howto_css_contenteditable_border.asp */
+[contenteditable] {
+  outline: 0px solid transparent;
+}
+
 div.container {
   display: flex;
   flex-direction: column;
@@ -36,6 +41,16 @@ div.item {
 div.item:nth-of-type(1) {
   background-color: #adb5bd;
   color: black;
+}
+
+div.item:nth-of-type(1):hover {
+  background-color: white;
+  border: 1px solid #adb5bd;
+}
+
+div.item:nth-of-type(1):focus {
+  background-color: white;
+  border: 2px solid #adb5bd;
 }
 
 div.item:nth-of-type(2) {
