@@ -15,7 +15,20 @@ import geoip2.database
 BASE_DIR = os.path.dirname(__file__)
 DEBUG = os.environ.get("DEBUG", False) == "True"
 SECRET_KEY = os.environ.get("SECRET_KEY", os.urandom(32))
+
 logger = logging.getLogger(__name__)
+logger.setLevel(level=logging.DEBUG)
+formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+
+handler = logging.FileHandler("django.log")
+handler.setLevel(logging.INFO)
+handler.setFormatter(formatter)
+logger.addHandler(handler)
+
+console = logging.StreamHandler()
+console.setLevel(logging.DEBUG)
+logger.addHandler(console)
+
 
 # https://github.com/lionsoul2014/ip2region
 ip2region_reader = Ip2Region("./ip2region/ip2region.db")
@@ -73,6 +86,7 @@ def get_ip_address(request: WSGIRequest) -> str:
 
 def get_ip_location(ip_address: str) -> Dict:
     """query the ip location"""
+    logger.info(f"get ip location {ip_address}")
     INVALID_IP = "IP 地址错误"
     UNKNOWN_LOCATION = "未知"
     try:

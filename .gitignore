@@ -2,6 +2,7 @@
 __pycache__/
 /.vscode/
 /GeoLite2/
+*.log
 
 
 # General
