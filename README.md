@@ -29,8 +29,6 @@ curl 'https://ip.jackjyq.com/?ip=114.114.114.114' -H 'Content-Type: application/
 
 ### 初始化
 
-- ip2region 数据库较小，因此包含在 Git 仓库里，不用单独下载
-
 ```bash
 python3.10 -m virtualenv venv   # 创建虚拟环境
 pip install -r requirements.txt     # 安装依赖
