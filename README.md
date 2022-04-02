@@ -30,10 +30,12 @@ curl 'https://ip.jackjyq.com/?ip=114.114.114.114' -H 'Content-Type: application/
 ### 初始化
 
 ```bash
-python3.10 -m virtualenv venv   # 创建虚拟环境
-pip install -r requirements.txt     # 安装依赖
+python3.10 -m virtualenv venv
+pip install -r requirements.txt
+
+# 下载 IP 数据库
 chmod +x download_ip_data.sh
-./download_ip_data.sh   # 下载 IP 数据库
+./download_ip_data.sh
 ```
 
 ### 运行
