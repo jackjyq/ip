@@ -97,3 +97,14 @@ footer {
   font-size: 14px;
   width: 100%;
 }
+
+header {
+  text-align: center;
+  position: fixed;
+  top: 8px;
+  width: 100%;
+}
+
+header p {
+  font-size: 14px;
+}
