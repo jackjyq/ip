@@ -1,62 +1,7 @@
-/* font-family
-    https://zenozeng.github.io/fonts.css/ */
 body {
-  font-family: -apple-system, "Noto Sans", "Helvetica Neue", Helvetica,
-    "Nimbus Sans L", Arial, "Liberation Sans", "PingFang SC", "Hiragino Sans GB",
-    "Noto Sans CJK SC", "Source Han Sans SC", "Source Han Sans CN",
-    "Microsoft YaHei", "Wenquanyi Micro Hei", "WenQuanYi Zen Hei", "ST Heiti",
-    SimHei, "WenQuanYi Zen Hei Sharp", sans-serif;
-}
-
-a {
-  color: blue;
-  text-decoration: none;
-}
-
-a:visited {
-  color: blue;
-}
-
-body {
-  height: 100vh;
-  /* Rainbow Colors 300
-  https://material.io/design/color/the-color-system.html#tools-for-picking-colors
-
-  There are 9 <linear-color-stop>  that creates 8 color regions (region 1 to
-  region 8).We know the last two <linear-color-stop> are the same as the first
-  two, thus region 8should be identical to region 1.
-
-  We set the <background-size> to 800%, thus every time there should be exactly
-  1 colour region showing on the screen. We start from the last colour region
-  and end with the first one so that we can create a smooth animation.
-
-  It is to be noted that the <background_position> starts at 100% rather than
-  87.5% (7/8) because: "A value of 100% means that the bottom edge of the
-  background image is aligned with the bottom edge of the container."
-  */
-  background: linear-gradient(
-    0deg,
-    #e57373,
-    #ffb74d,
-    #fff176,
-    #81c784,
-    #64b5f6,
-    #7986cb,
-    #ba68c8,
-    #e57373,
-    #ffb74d
-  );
-  background-size: 100% 800%;
-  animation: rainbow 30s linear infinite;
-}
-
-@keyframes rainbow {
-  0% {
-    background-position: 0% 100%;
-  }
-  100% {
-    background-position: 0% 0%;
-  }
+  /* font-family
+    https://m.weibo.cn/ */
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 main {
@@ -64,50 +9,66 @@ main {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
+  background-color: #f2f2f2;
 }
 
-section {
+article {
   box-sizing: border-box;
-  text-align: center;
-  overflow-x: auto;
-  overflow-y: hidden;
-  white-space: nowrap;
-  border: 0;
-  height: 20vh;
-  padding-top: 6vh;
-  padding-bottom: 4vh;
+  padding: 20px;
+  border-top: rgb(230, 230, 230);
+  border-top-width: 1px;
+  border-top-style: solid;
+  border-bottom: rgb(230, 230, 230);
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  width: min(750px, 100vw);
+  background-color: #ffffff;
 }
 
-h1 {
-  /* 7vh guranteen enough space to show 255.255.255.255 on iPhone SE*/
-  font-size: 7vh;
-  margin-bottom: 1vh;
-  opacity: 0.87;
+.card-title {
+  display: flex;
+  margin-bottom: 15px;
 }
 
-p {
-  font-size: 2vh;
+.card-title img {
+  height: 40px;
+  width: 40px;
+}
+
+.card-title div {
+  margin-left: 5px;
+}
+
+.card-title h1 {
+  font-size: 24.5px;
+  line-height: 1.4;
+  color: #333333;
+}
+
+.card-title p {
+  font-size: 16px;
+  color: #939393;
+  line-height: 1.5;
+}
+
+.card-title p {
+  font-size: 12px;
   opacity: 0.6;
 }
 
-footer {
-  text-align: center;
-  position: fixed;
-  bottom: 8px;
-  width: 100%;
+.card-content {
+  font-size: 20px;
+  color: #333333;
+  line-height: 1.5;
+  word-wrap: break-word;
 }
 
-footer p {
-  font-size: 14px;
+a {
+  color: #3c6e9e;
+  text-decoration: none;
 }
 
-header {
-  text-align: center;
-  position: fixed;
-  top: 8px;
-  width: 100%;
-}
-
-header p {
-  font-size: 14px;
+a:visited {
+  color: #3c6e9e;
 }

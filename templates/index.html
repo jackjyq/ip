@@ -45,54 +45,37 @@
 
   <body>
     <main>
-      <section>
-        <h1>{{ ip }}</h1>
-      </section>
-      <section>
-        {% if not province and not city %}
-        <h1>未知地址</h1>
-        {% elif not province %}
-        <h1>{{ city }}</h1>
-        {% elif not city %}
-        <h1>{{ province }}</h1>
-        {% elif province == city %}
-        <h1>{{ city }}</h1>
-        {% else %}
-        <h1>{{ province }} {{ city }}</h1>
-        {% endif %} {% if country %}
-        <p>{{ country }}</p>
-        {% endif %}
-      </section>
-      <section>
-        {% if browser %}
-        <h1>{{ browser }}</h1>
-        {% else %}
-        <h1>未知浏览器</h1>
-        {% endif %} {% if browser_version %}
-        <p>{{ browser_version }}</p>
-        {% endif %}
-      </section>
-      <section>
-        {% if os %}
-        <h1>{{ os }}</h1>
-        {% else %}
-        <h1>未知系统</h1>
-        {% endif %} {% if os_version %}
-        <p>{{ os_version }}</p>
-        {% endif %}
+      <!-- the article card -->
+      <article>
+        <section class="card-title">
+          <img src="{% static 'favicon_io/android-chrome-192x192.png' %}" alt="avatar" />
+          <div>
+            <h1>{{ ip }}</h1>
+            <p>
+              <!--prettier-ignore-->
+              归属地
+              {% if country %} {{ country }} {% endif %}
+              {% if province %}
+              {{ province }} {% endif %}
+              {% if city %} {{ city }} {% endif %}
+            </p>
+            <p>
+              <!--prettier-ignore-->
+              来自
+              {% if device %} {{ device }} {% endif %}
+              ({% if browser %} {{ browser }} {% endif %})
+            </p>
+          </div>
+        </section>
+        <section class="card-content">
+          <p>
+            本页面由
+            <a href="https://gitee.com/songyustudio/ip">松鱼工作室</a>
+            设计，基于 MIT 协议发布。IP 归属地数据库为
+            <a href="{{ database_href }}">{{ database_name }}</a>。
+          </p>
+        </section>
       </section>
     </main>
-    <footer>
-      <p>
-        MIT License © 2022
-        <a href="https://gitee.com/songyustudio/ip">松鱼工作室</a>
-      </p>
-      {% if database_name %}
-      <p>
-        IP 归属地数据库
-        <a href="{{ database_href }}">{{ database_name }}</a>
-      </p>
-      {% endif %}
-    </footer>
   </body>
 </html>
