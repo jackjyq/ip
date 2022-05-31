@@ -19,6 +19,8 @@ a:visited {
 
 main {
   height: 100vh;
+  /* https://css-tricks.com/css-fix-for-100vh-in-mobile-webkit/ */
+  height: -webkit-fill-available;
   /* Rainbow Colors 300
   https://material.io/design/color/the-color-system.html#tools-for-picking-colors
 
@@ -63,6 +65,7 @@ section {
   box-sizing: border-box;
   text-align: center;
   overflow-x: auto;
+  overflow-y: hidden;
   white-space: nowrap;
   border: 0;
   height: 20vh;
@@ -75,7 +78,6 @@ h1 {
   font-size: 7vh;
   margin-bottom: 1vh;
   opacity: 0.87;
-  height: 7vh;
 }
 
 p {
