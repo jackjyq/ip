@@ -2,10 +2,17 @@
 <!DOCTYPE html>
 <html lang="zh-Hans">
   <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="content-type" content="txt/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>IP 归属地查询器</title>
+    <meta
+      name="keywords"
+      content="IP地址, IP地址查询, IP归属地, IP属地, 我的手机IP地址, 浏览器版本, 浏览器, 操作系统版本"
+    />
+    <meta
+      name="description"
+      content="我的IP查询, 可查询我的IP地址及归属地, 及访问本站所使用的设备、操作系统及浏览器版本。"
+    />
+    <title>我的IP查询</title>
     <!-- import favicon -->
     <link
       rel="apple-touch-icon"
@@ -34,27 +41,41 @@
     <!-- import css -->
     <link rel="stylesheet" type="text/css" href="{% static 'reset.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}" />
-    <!-- import js -->
-    <script async src="{% static 'script.js' %}"></script>
   </head>
 
   <body>
     <main>
-      <div class="container">
-        <div class="item" id="ip" contenteditable="true">{{ ip }}</div>
-        <div class="item">{{ country }}</div>
-        <div class="item">{{ province }}</div>
-        <div class="item">{{ city }}</div>
-        <div class="item">{{ isp }}</div>
-      </div>
+      <section>
+        <h1>{{ ip }}</h1>
+        {% if database_name %}
+        <p>数据源: <a href="{{ database_href }}">{{ database_name }} </a></p>
+        {% endif %}
+      </section>
+      <section>
+        <h1>{% if country %} {{ country }} {% else %} 未知国家 {% endif %}</h1>
+        <p>
+          {% if city %} {{ city }} {% elif province %} {{ province }} {% else %}
+          未知地点 {% endif %}
+        </p>
+      </section>
+      <section>
+        <h1>{{ device }}</h1>
+        <p>
+          {% if device == device_model %} 未知型号 {% else %} {{ device_model }}
+          {% endif %}
+        </p>
+      </section>
+      <section>
+        <h1>{{ os }}</h1>
+        <p>{{ os_version }}</p>
+      </section>
+      <section>
+        <h1>{{ browser }}</h1>
+        <p>{{ browser_version }}</p>
+      </section>
     </main>
     <footer>
-      本机 IP <a href="./">{{ local_ip }}</a>
-      <br />
-      {% if database_name %} 数据源
-      <a href="{{ database_href }}">{{ database_name }} </a>
-      <br />
-      {% endif %} Designed by
+      MIT License (c) 2022
       <a href="https://gitee.com/songyustudio/ip">松鱼工作室</a>
     </footer>
   </body>
