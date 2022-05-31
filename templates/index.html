@@ -44,18 +44,6 @@
   </head>
 
   <body>
-    <header>
-      <p>
-        MIT License © 2022
-        <a href="https://gitee.com/songyustudio/ip">松鱼工作室</a>
-      </p>
-      {% if database_name %}
-      <p>
-        IP 归属地数据库：
-        <a href="{{ database_href }}">{{ database_name }}</a>
-      </p>
-      {% endif %}
-    </header>
     <main>
       <section>
         <h1>{{ ip }}</h1>
@@ -94,5 +82,17 @@
         {% endif %}
       </section>
     </main>
+    <footer>
+      <p>
+        MIT License © 2022
+        <a href="https://gitee.com/songyustudio/ip">松鱼工作室</a>
+      </p>
+      {% if database_name %}
+      <p>
+        IP 归属地数据库
+        <a href="{{ database_href }}">{{ database_name }}</a>
+      </p>
+      {% endif %}
+    </footer>
   </body>
 </html>

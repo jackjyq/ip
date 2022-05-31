@@ -94,12 +94,14 @@ footer {
   text-align: center;
   position: fixed;
   bottom: 8px;
-  font-size: 14px;
   width: 100%;
 }
 
+footer p {
+  font-size: 14px;
+}
+
 header {
-  z-index: -1;
   text-align: center;
   position: fixed;
   top: 8px;
