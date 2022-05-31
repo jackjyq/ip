@@ -19,8 +19,6 @@ a:visited {
 
 main {
   height: 100vh;
-  /* https://css-tricks.com/css-fix-for-100vh-in-mobile-webkit/ */
-  height: -webkit-fill-available;
   /* Rainbow Colors 300
   https://material.io/design/color/the-color-system.html#tools-for-picking-colors
 
