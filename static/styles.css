@@ -48,12 +48,12 @@ p {
 }
 
 footer {
-  font-size: 12px;
-  margin-top: 16px;
-  margin-bottom: 16px;
-  text-align: center;
-  opacity: 0.87;
   background-color: #ffffff;
+}
+
+footer img {
+  height: 7vh;
+  width: 7vh;
 }
 
 /* card layout */

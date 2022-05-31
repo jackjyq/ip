@@ -1,6 +1,6 @@
-# IP 归属地查询器
+# 我的 IP 查询
 
-一个查看 IP 地址归属地的工具
+我的 IP 查询, 可查询我的 IP 地址及归属地, 及访问本站所使用的设备、操作系统及浏览器版本。
 
 ## 使用说明
 
@@ -9,6 +9,7 @@
 https://ip.jackjyq.com/
 
 ```bash
+# 获取 JSON 格式
 curl 'https://ip.jackjyq.com/' -H 'Content-Type: application/json'
 ```
 
