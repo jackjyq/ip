@@ -71,12 +71,16 @@ def get_index(request: WSGIRequest) -> HttpResponse:
     ip_address = get_ip_address(request)
     ip_location = get_ip_location(ip_address)
     user_agent = get_user_agent(request)
-    logger.info(
-        f"Data: {json.dumps(ip_location | user_agent, ensure_ascii=False, sort_keys=True)}"
-    )
+
     if request.content_type == "application/json":
+        logger.info(
+            f"Web: {json.dumps(ip_location | user_agent, ensure_ascii=False, sort_keys=True)}"
+        )
         return JsonResponse(ip_location | user_agent)
     else:
+        logger.info(
+            f"API: {json.dumps(ip_location | user_agent, ensure_ascii=False, sort_keys=True)}"
+        )
         return render(request, "index.html", ip_location | user_agent)
 
 
