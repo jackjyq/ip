@@ -99,6 +99,7 @@ footer {
 }
 
 header {
+  z-index: -1;
   text-align: center;
   position: fixed;
   top: 8px;
