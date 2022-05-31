@@ -59,34 +59,22 @@
         </p>
       </section>
       <section>
-        <h1>{{ device }}</h1>
-        <p>
-          {% if device == device_model %} 未知型号 {% else %} {{ device_model }}
-          {% endif %}
-        </p>
+        <h1>{{ browser }}</h1>
+        <p>{{ browser_version }}</p>
       </section>
       <section>
         <h1>{{ os }}</h1>
         <p>{{ os_version }}</p>
       </section>
       <section>
-        <h1>{{ browser }}</h1>
-        <p>{{ browser_version }}</p>
+        <h1>{{ device }}</h1>
       </section>
-    </main>
-    <footer>
       <section>
-        <h1>
-          <img
-            src="{% static 'favicon_io/android-chrome-192x192.png' %}"
-            alt="logo"
-          />
-        </h1>
         <p>
           MIT License (c) 2022
           <a href="https://gitee.com/songyustudio/ip">松鱼工作室</a>
         </p>
       </section>
-    </footer>
+    </main>
   </body>
 </html>
