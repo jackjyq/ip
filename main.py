@@ -3,7 +3,7 @@ import os
 import sys
 from ipaddress import AddressValueError, IPv4Address
 from typing import Dict
-
+import json
 import geoip2.database
 from django.conf import settings
 from django.core.handlers.wsgi import WSGIRequest
@@ -71,6 +71,9 @@ def get_index(request: WSGIRequest) -> HttpResponse:
     ip_address = get_ip_address(request)
     ip_location = get_ip_location(ip_address)
     user_agent = get_user_agent(request)
+    logger.info(
+        f"Data: {json.dumps(ip_location | user_agent, ensure_ascii=False,indent=2, sort_keys=True)}"
+    )
     if request.content_type == "application/json":
         return JsonResponse(ip_location | user_agent)
     else:
@@ -111,7 +114,6 @@ def get_ip_location(ip_address: str) -> Dict:
 
     None when the field is unknown
     """
-    logger.info(f"get ip location {ip_address}")
     # use ip2region database to get the country name
     ip2region_result = (
         ip2region_reader.btreeSearch(ip_address)["region"].decode().split("|")
