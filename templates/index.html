@@ -47,34 +47,44 @@
     <main>
       <section>
         <h1>{{ ip }}</h1>
-        {% if database_name %}
-        <p>数据源: <a href="{{ database_href }}">{{ database_name }} </a></p>
+      </section>
+      <section>
+        {% if not province and not city %}
+        <h1>未知地址</h1>
+        {% elif not province %}
+        <h1>{{ city }}</h1>
+        {% elif not city %}
+        <h1>{{ province }}</h1>
+        {% elif province == city %}
+        <h1>{{ city }}</h1>
+        {% else %}
+        <h1>{{ province }}・{{ city }}</h1>
+        {% endif %} {% if country %}
+        <p>{{ country }}</p>
         {% endif %}
       </section>
       <section>
-        <h1>{% if country %} {{ country }} {% else %} 未知国家 {% endif %}</h1>
-        <p>
-          {% if city %} {{ city }} {% elif province %} {{ province }} {% else %}
-          未知地点 {% endif %}
-        </p>
-      </section>
-      <section>
+        {% if browser %}
         <h1>{{ browser }}</h1>
+        {% else %}
+        <h1>未知浏览器</h1>
+        {% endif %} {% if browser_version %}
         <p>{{ browser_version }}</p>
+        {% endif %}
       </section>
       <section>
+        {% if os %}
         <h1>{{ os }}</h1>
+        {% else %}
+        <h1>未知系统</h1>
+        {% endif %} {% if os_version %}
         <p>{{ os_version }}</p>
-      </section>
-      <section>
-        <h1>{{ device }}</h1>
-      </section>
-      <section>
-        <p>
-          MIT License (c) 2022
-          <a href="https://gitee.com/songyustudio/ip">松鱼工作室</a>
-        </p>
+        {% endif %}
       </section>
     </main>
+    <footer>
+      MIT License © 2022
+      <a href="https://gitee.com/songyustudio/ip">松鱼工作室</a>
+    </footer>
   </body>
 </html>
