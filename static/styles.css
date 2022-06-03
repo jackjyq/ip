@@ -23,14 +23,15 @@ footer {
 header {
   text-align: center;
   font-size: 20px;
-  padding: 50px 0;
+  height: 120px;
+  padding-top: 50px;
 }
 
 main {
   padding: 0 16px 16px 16px;
   font-size: 17px;
   /* 100vh - header - footer */
-  min-height: calc(100vh - 120px - 63px);
+  min-height: calc(100vh - 120px - 80px);
 }
 
 section {
@@ -74,7 +75,13 @@ footer {
   text-align: center;
   color: #888888;
   font-size: 13px;
-  padding: 25px 0;
+  height: 80px;
+  padding-top: 20px;
+}
+
+footer p {
+  line-height: 1.2;
+  padding: 0;
 }
 
 a {

@@ -71,6 +71,7 @@ def get_index(request: WSGIRequest) -> HttpResponse:
     ip_address = get_ip_address(request)
     ip_location = get_ip_location(ip_address)
     user_agent = get_user_agent(request)
+
     if request.content_type == "application/json":
         logger.info(
             f"API: {json.dumps(ip_location | user_agent, ensure_ascii=False, sort_keys=True)}"
