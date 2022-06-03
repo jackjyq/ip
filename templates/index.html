@@ -42,40 +42,60 @@
     <link rel="stylesheet" type="text/css" href="{% static 'reset.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}" />
   </head>
-
   <body>
+    <header>我的 IP 查询</header>
     <main>
-      <!-- the article card -->
-      <article>
-        <section class="card-title">
-          <img src="{% static 'favicon_io/android-chrome-192x192.png' %}" alt="avatar" />
-          <div>
-            <h1>{{ ip }}</h1>
-            <p>
-              <!--prettier-ignore-->
-              归属地
-              {% if country %} {{ country }} {% endif %}
-              {% if province %}
-              {{ province }} {% endif %}
-              {% if city %} {{ city }} {% endif %}
-            </p>
-            <p>
-              <!--prettier-ignore-->
-              来自
-              {% if device %} {{ device }} {% endif %}
-              ({% if browser %} {{ browser }} {% endif %})
-            </p>
-          </div>
-        </section>
-        <section class="card-content">
-          <p>
-            本页面由
-            <a href="https://gitee.com/songyustudio/ip">松鱼工作室</a>
-            设计，基于 MIT 协议发布。IP 归属地数据库为
-            <a href="{{ database_href }}">{{ database_name }}</a>。
-          </p>
-        </section>
+      <section>
+        <h1>IP 归属地</h1>
+        <ul>
+          <li>
+            <span>IP 地址</span>
+            <span>{{ ip }}</span>
+          </li>
+          <li>
+            <span>国家</span>
+            <span>{{ country }}</span>
+          </li>
+          <li>
+            <span>省份</span>
+            <span>{{ province }}</span>
+          </li>
+          <li>
+            <span>城市</span>
+            <span>{{ city }}</span>
+          </li>
+          <li>
+            <span>网络</span>
+            <span>{{ isp }}</span>
+          </li>
+        </ul>
+        <p>
+          IP 归属地查询数据库来自:
+          <a href="{{ database_href }}">{{ database_name }}</a>
+        </p>
+      </section>
+      <section>
+        <h1>客户端</h1>
+        <ul>
+          <li>
+            <span>浏览器</span>
+            <span>{{ browser }}</span>
+          </li>
+          <li>
+            <span>操作系统</span>
+            <span>{{ os }}</span>
+          </li>
+          <li>
+            <span>设备</span>
+            <span>{{ device }}</span>
+          </li>
+        </ul>
+        <p>用户代理: {{ user_agent }}</p>
       </section>
     </main>
+    <footer>
+      MIT License Copyright © 2022
+      <a href="https://gitee.com/songyustudio/ip">松鱼工作室</a>
+    </footer>
   </body>
 </html>

@@ -104,6 +104,7 @@ def get_user_agent(request: WSGIRequest) -> Dict:
     ua_string = request.META.get("HTTP_USER_AGENT")
     user_agent = parse(ua_string)
     return {
+        "user_agent": ua_string,
         "browser": user_agent.get_browser(),
         "os": user_agent.get_os(),
         "device": user_agent.get_device(),

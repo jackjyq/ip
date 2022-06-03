@@ -1,74 +1,87 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
   /* font-family
-    https://m.weibo.cn/ */
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    https://zenozeng.github.io/fonts.css/ */
+  font-family: -apple-system, "Noto Sans", "Helvetica Neue", Helvetica,
+    "Nimbus Sans L", Arial, "Liberation Sans", "PingFang SC", "Hiragino Sans GB",
+    "Noto Sans CJK SC", "Source Han Sans SC", "Source Han Sans CN",
+    "Microsoft YaHei", "Wenquanyi Micro Hei", "WenQuanYi Zen Hei", "ST Heiti",
+    SimHei, "WenQuanYi Zen Hei Sharp", sans-serif;
+}
+
+header,
+main,
+footer {
+  background-color: #f2f1f5;
+  margin: auto;
+  max-width: 600px;
+}
+
+header {
+  text-align: center;
+  font-size: 20px;
+  padding: 50px 0;
 }
 
 main {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-color: #f2f2f2;
+  padding: 0 16px 16px 16px;
+  font-size: 17px;
+  /* 100vh - header - footer */
+  min-height: calc(100vh - 120px - 63px);
 }
 
-article {
-  box-sizing: border-box;
-  padding: 20px;
-  border-top: rgb(230, 230, 230);
-  border-top-width: 1px;
-  border-top-style: solid;
-  border-bottom: rgb(230, 230, 230);
-  border-bottom-width: 1px;
-  border-bottom-style: solid;
-  width: min(750px, 100vw);
+section {
+  padding-bottom: 20px;
+}
+
+h1,
+p {
+  color: #888888;
+  font-size: 13px;
+  padding: 8px 0 8px 12px;
+}
+
+ul {
   background-color: #ffffff;
+  border-radius: 8px;
+  padding-left: 12px;
 }
 
-.card-title {
+li {
+  padding: 12px 12px 12px 0;
   display: flex;
-  margin-bottom: 15px;
+  justify-content: space-between;
+  column-gap: 12px;
 }
 
-.card-title img {
-  height: 40px;
-  width: 40px;
+li:not(:last-child) {
+  border-bottom: #c9c9c99e solid 1px;
 }
 
-.card-title div {
-  margin-left: 5px;
+li > span:nth-child(1) {
+  flex-shrink: 0;
 }
 
-.card-title h1 {
-  font-size: 24.5px;
-  line-height: 1.4;
-  color: #333333;
+li > span:nth-child(2) {
+  color: #888888;
+  word-break: break-all;
 }
 
-.card-title p {
-  font-size: 16px;
-  color: #939393;
-  line-height: 1.5;
-}
-
-.card-title p {
-  font-size: 12px;
-  opacity: 0.6;
-}
-
-.card-content {
-  font-size: 20px;
-  color: #333333;
-  line-height: 1.5;
-  word-wrap: break-word;
+footer {
+  text-align: center;
+  color: #888888;
+  font-size: 13px;
+  padding: 25px 0;
 }
 
 a {
-  color: #3c6e9e;
+  color: #3b77e1;
   text-decoration: none;
 }
 
 a:visited {
-  color: #3c6e9e;
+  color: #3b77e1;
 }
