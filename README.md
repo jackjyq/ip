@@ -1,4 +1,6 @@
-# 我的 IP 查询
+# 考拉 IP 归属地
+
+![](./static/favicon_io/android-chrome-192x192.png)
 
 我的 IP 查询, 可查询我的 IP 地址及归属地, 及访问本站所使用的设备、操作系统及浏览器版本。
 
