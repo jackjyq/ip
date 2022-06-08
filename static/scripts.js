@@ -3,3 +3,5 @@ document.getElementById("width").innerHTML =
   window.screen.width * window.devicePixelRatio;
 document.getElementById("height").innerHTML =
   window.screen.height * window.devicePixelRatio;
+document.getElementById("devicePixelRatio").innerHTML =
+  "设备像素比: " + window.devicePixelRatio;
