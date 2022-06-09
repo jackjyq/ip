@@ -3,63 +3,61 @@
 }
 
 body {
-  /* font-family
-    https://zenozeng.github.io/fonts.css/ */
-  font-family: -apple-system, "Noto Sans", "Helvetica Neue", Helvetica,
-    "Nimbus Sans L", Arial, "Liberation Sans", "PingFang SC", "Hiragino Sans GB",
-    "Noto Sans CJK SC", "Source Han Sans SC", "Source Han Sans CN",
-    "Microsoft YaHei", "Wenquanyi Micro Hei", "WenQuanYi Zen Hei", "ST Heiti",
-    SimHei, "WenQuanYi Zen Hei Sharp", sans-serif;
+  /* https://github.com */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial,
+    sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  font-size: 16px;
+  color: #000000de;
 }
 
 header,
 main,
 footer {
-  background-color: #f2f1f5;
+  background-color: #f2f2f2;
   margin: auto;
-  max-width: 600px;
+  padding-left: 16px;
+  padding-right: 16px;
+  max-width: 768px;
 }
 
 header {
   text-align: center;
   font-size: 20px;
-  height: 120px;
-  padding-top: 50px;
+  font-weight: 500;
+  height: 100px;
+  padding-top: 40px;
 }
 
 main {
-  padding: 0 16px 16px 16px;
-  font-size: 17px;
   /* 100vh - header - footer */
   min-height: calc(100vh - 120px - 80px);
 }
 
 section {
-  padding-bottom: 20px;
+  padding-top: 24px;
 }
 
 h1,
 p {
-  color: #888888;
-  font-size: 13px;
+  font-size: 12px;
   padding: 8px 0 8px 12px;
 }
 
 ul {
   background-color: #ffffff;
-  border-radius: 8px;
+  border-radius: 12px;
   padding-left: 12px;
 }
 
 li {
-  padding: 12px 12px 12px 0;
+  padding: 16px 12px 16px 0;
   display: flex;
   justify-content: space-between;
   column-gap: 12px;
 }
 
 li:not(:last-child) {
-  border-bottom: #c9c9c99e solid 1px;
+  border-bottom: #00000010 solid 1px;
 }
 
 li > span:nth-child(1) {
@@ -67,16 +65,14 @@ li > span:nth-child(1) {
 }
 
 li > span:nth-child(2) {
-  color: #888888;
+  color: #0000008a;
   word-break: break-all;
 }
 
 footer {
   text-align: center;
-  color: #888888;
-  font-size: 13px;
   height: 80px;
-  padding-top: 20px;
+  padding-top: 32px;
 }
 
 footer p {
@@ -87,8 +83,4 @@ footer p {
 a {
   color: #3b77e1;
   text-decoration: none;
-}
-
-a:visited {
-  color: #3b77e1;
 }
