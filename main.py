@@ -1,9 +1,9 @@
+import json
 import logging
 import os
 import sys
-from ipaddress import AddressValueError, IPv4Address
 from typing import Dict
-import json
+
 import geoip2.database
 from django.conf import settings
 from django.core.handlers.wsgi import WSGIRequest
@@ -12,6 +12,7 @@ from django.core.wsgi import get_wsgi_application
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.urls import path
+from geopy.geocoders import Nominatim
 from user_agents import parse
 from whitenoise import WhiteNoise
 
@@ -21,12 +22,6 @@ from ip2Region import Ip2Region
 BASE_DIR = os.path.dirname(__file__)
 DEBUG = os.environ.get("DEBUG", False) == "True"
 SECRET_KEY = os.environ.get("SECRET_KEY", os.urandom(32))
-
-
-# https://github.com/lionsoul2014/ip2region
-ip2region_reader = Ip2Region("./ip_data/ip2region/ip2region.db")
-# https://geoip2.readthedocs.io/en/latest/
-geolite2_reader = geoip2.database.Reader("./ip_data/GeoLite2/GeoLite2-City.mmdb")
 
 
 settings.configure(
@@ -65,6 +60,15 @@ logger.addHandler(handler)
 console = logging.StreamHandler()
 console.setLevel(logging.DEBUG)
 logger.addHandler(console)
+
+
+# Other services initialization
+# https://github.com/lionsoul2014/ip2region
+ip2region_reader = Ip2Region("./ip_data/ip2region/ip2region.db")
+# https://geoip2.readthedocs.io/en/latest/
+geolite2_reader = geoip2.database.Reader("./ip_data/GeoLite2/GeoLite2-City.mmdb")
+# https://geopy.readthedocs.io/en/stable/
+geolocator = Nominatim(user_agent="ip.jackjyq.com")
 
 
 def get_index(request: WSGIRequest) -> HttpResponse:
@@ -158,7 +162,25 @@ def get_ip_location(ip_address: str) -> Dict:
     return ip2region_location
 
 
-urlpatterns = [path("", get_index)]
+def get_address_from_coordinates(request: WSGIRequest) -> str:
+    """get address from coordinates
+
+    Returns:
+        str: {"address": location.address}
+    """
+    latitude = request.GET.get("latitude")
+    longitude = request.GET.get("longitude")
+    try:
+        location = geolocator.reverse(f"{latitude}, {longitude}", language="zh-cn")
+    except ValueError:
+        return JsonResponse({"address": None})
+    return JsonResponse({"address": location.address})
+
+
+urlpatterns = [
+    path("", get_index),
+    path("address", get_address_from_coordinates),
+]
 application = get_wsgi_application()
 application = WhiteNoise(application, root="./static", prefix="static/")
 

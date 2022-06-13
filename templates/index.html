@@ -55,29 +55,39 @@
             <span>{{ ip }}</span>
           </li>
           <li>
-            <span>国家</span>
-            <span>{{ country }}</span>
-          </li>
-          <li>
-            <span>省份</span>
-            <span>{{ province }}</span>
-          </li>
-          <li>
-            <span>城市</span>
-            <span>{{ city }}</span>
-          </li>
-          <li>
-            <span>网络</span>
+            <span>网络提供商</span>
             <span>{{ isp }}</span>
+          </li>
+          <li>
+            <span>归属地</span>
+            <span>{{ country }}, {{ province }}, {{ city }}</span>
           </li>
         </ul>
         <p>
-          IP 归属地查询数据库来自:
+          IP 归属地数据源:
           <a href="{{ database_href }}">{{ database_name }}</a>
         </p>
       </section>
       <section>
-        <h1>访问设备</h1>
+        <h1>系统定位</h1>
+        <ul>
+          <li>
+            <span>经度</span>
+            <span id="longitude">未知</span>
+          </li>
+          <li>
+            <span>纬度</span>
+            <span id="latitude">未知</span>
+          </li>
+          <li>
+            <span>定位地址</span>
+            <span id="address">未知</span>
+          </li>
+        </ul>
+        <p>定位地址数据源: <a href="https://nominatim.org/">Nominatim</a></p>
+      </section>
+      <section>
+        <h1>用户设备</h1>
         <ul>
           <li>
             <span>浏览器</span>
@@ -91,22 +101,16 @@
             <span>设备</span>
             <span>{{ device }}</span>
           </li>
+          <li>
+            <span>屏幕分辨率</span>
+            <span id="resolution">未知</span>
+          </li>
+          <!-- <li>
+            <span>设备像素比</span>
+            <span id="devicePixelRatio">1</span>
+          </li> -->
         </ul>
         <p>用户代理: {{ user_agent }}</p>
-      </section>
-      <section>
-        <h1>屏幕分辨率</h1>
-        <ul>
-          <li>
-            <span>宽</span>
-            <span id="width">0</span>
-          </li>
-          <li>
-            <span>高</span>
-            <span id="height">0</span>
-          </li>
-        </ul>
-        <p id="devicePixelRatio">设备像素比: 1</p>
       </section>
     </main>
     <footer>
