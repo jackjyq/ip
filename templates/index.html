@@ -43,6 +43,20 @@
     <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}" />
     <!-- import js -->
     <script src="{% static 'scripts.js' %}" defer></script>
+    <!-- Google tag (gtag.js) -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-YXC7ESZ82P"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-YXC7ESZ82P");
+    </script>
   </head>
   <body>
     <header>考拉 IP 归属地</header>
