@@ -2,29 +2,28 @@
 
 ![](./static/favicon_io/android-chrome-192x192.png)
 
-我的 IP 查询, 可查询我的 IP 地址及归属地, 及访问本站所使用的设备、操作系统及浏览器版本。
+查询我的 IP 地址、归属地、设备类型、操作系统、浏览器版本、屏幕分辨率、经纬度及地理位置。
 
-## 使用说明
+## API
 
-### 查看本机 IP 归属地
+### 网页格式
 
 https://ip.jackjyq.com/
 
-```bash
-# 获取 JSON 格式
-curl 'https://ip.jackjyq.com/' -H 'Content-Type: application/json'
-```
+### 文本格式
 
-## IP 数据库
+`curl 'https://ip.jackjyq.com/'`
 
-- 国内 IP: [ip2region](https://github.com/lionsoul2014/ip2region)
-- 国外 IP: [MaxMind GeoLite2](https://www.maxmind.com/en/home)
+### JSON 格式
 
-## 本地部署
+`curl 'https://ip.jackjyq.com/' -H 'Content-Type: application/json'`
 
-### 初始化
+## 部署运行
+
+### 部署
 
 ```bash
+# 配置虚拟环境
 python3.10 -m virtualenv venv
 pip install -r requirements.txt
 
@@ -40,3 +39,14 @@ DEBUG=True python main.py runserver
 # 或者
 gunicorn main
 ```
+
+## 数据源
+
+### IP 归属地
+
+- 国内 IP: [ip2region](https://github.com/lionsoul2014/ip2region)
+- 国外 IP: [MaxMind GeoLite2](https://www.maxmind.com/en/home)
+
+### 经纬度位置
+
+- [Nominatim](https://nominatim.org/)

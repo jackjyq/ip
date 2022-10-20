@@ -72,20 +72,29 @@ geolocator = Nominatim(user_agent="ip.jackjyq.com")
 
 
 def get_index(request: WSGIRequest) -> HttpResponse:
-    ip_address = get_ip_address(request)
-    ip_location = get_ip_location(ip_address)
-    user_agent = get_user_agent(request)
+    ip_address: str = get_ip_address(request)
+    ip_location: Dict = get_ip_location(ip_address)
+    user_agent: Dict = get_user_agent(request)
+    response: Dict = ip_location | user_agent
+
+    def get_text_response(d: dict) -> str:
+        s = ""
+        for key in d.keys():
+            s += key + ": " + str(d[key]) + "\r\n"
+        return s
 
     if request.content_type == "application/json":
-        logger.info(
-            f"API: {json.dumps(ip_location | user_agent, ensure_ascii=False, sort_keys=True)}"
+        logger.info(f"API: {json.dumps(response, ensure_ascii=False, sort_keys=True)}")
+        return JsonResponse(
+            response,
+            json_dumps_params={"ensure_ascii": False, "indent": 2},
         )
-        return JsonResponse(ip_location | user_agent)
+    elif user_agent["user_agent"].startswith("curl"):
+        logger.info(f"TEXT: {json.dumps(response, ensure_ascii=False, sort_keys=True)}")
+        return HttpResponse(get_text_response(response), content_type="text/plain")
     else:
-        logger.info(
-            f"Web: {json.dumps(ip_location | user_agent, ensure_ascii=False, sort_keys=True)}"
-        )
-        return render(request, "index.html", ip_location | user_agent)
+        logger.info(f"Web: {json.dumps(response, ensure_ascii=False, sort_keys=True)}")
+        return render(request, "index.html", response)
 
 
 def get_ip_address(request: WSGIRequest) -> str:
@@ -173,6 +182,8 @@ def get_address_from_coordinates(request: WSGIRequest) -> str:
     try:
         location = geolocator.reverse(f"{latitude}, {longitude}", language="zh-cn")
     except ValueError:
+        return JsonResponse({"address": None})
+    if not location:
         return JsonResponse({"address": None})
     return JsonResponse({"address": location.address})
 
