@@ -1,9 +1,7 @@
 // Get screen resolution
 // https://stackoverflow.com/questions/2242086/how-to-detect-the-screen-resolution-with-javascript
 document.getElementById("resolution").innerHTML =
-  window.screen.width * window.devicePixelRatio +
-  " x " +
-  window.screen.height * window.devicePixelRatio;
+  window.screen.width + " x " + window.screen.height;
 // document.getElementById("devicePixelRatio").innerHTML = window.devicePixelRatio;
 
 // Get device location
@@ -27,8 +25,6 @@ navigator.geolocation.getCurrentPosition(
         return response.json();
       })
       .then((data) => {
-        console.log(data);
-        console.log(data.address);
         address_element.innerHTML = data.address;
       });
   },
