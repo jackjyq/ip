@@ -115,17 +115,27 @@
             <span>设备</span>
             <span>{{ device }}</span>
           </li>
-          <li>
-            <span>屏幕分辨率</span>
-            <span id="resolution">未知</span>
-          </li>
-          <!-- <li>
-            <span>设备像素比</span>
-            <span id="devicePixelRatio">1</span>
-          </li> -->
         </ul>
         <p>用户代理: {{ user_agent }}</p>
       </section>
+      <section>
+        <h1>屏幕</h1>
+        <ul>
+          <li>
+            <span>分辨率</span>
+            <span id="resolution">未知</span>
+          </li>
+          <li>
+            <span>长宽比</span>
+            <span id="aspectRatio">未知</span>
+          </li>
+          <li>
+            <span>像素比</span>
+            <span id="devicePixelRatio">1</span>
+          </li>
+        </ul>
+      </section>
+      <p>注意: 屏幕分辨率可通过系统设置更改</p>
       <section>
         <h1>捐赠项目</h1>
         <ul>
