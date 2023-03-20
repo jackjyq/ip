@@ -12,13 +12,15 @@ function reduceFraction(numerator, denominator) {
 
 // Get the screen detail
 // https://stackoverflow.com/questions/2242086/how-to-detect-the-screen-resolution-with-javascript
-document.getElementById("resolution").innerHTML =
+document.getElementById("logicResolution").innerHTML =
   window.screen.width + " x " + window.screen.height;
-document.getElementById("devicePixelRatio").innerHTML = window.devicePixelRatio;
-
-reducedPair = reduceFraction(window.screen.width, window.screen.height);
-document.getElementById("aspectRatio").innerHTML =
-  reducedPair[0] + " : " + reducedPair[1];
+document.getElementById("resolution").innerHTML =
+  window.screen.width * window.devicePixelRatio +
+  " x " +
+  window.screen.height * window.devicePixelRatio;
+// reducedPair = reduceFraction(window.screen.width, window.screen.height);
+// document.getElementById("aspectRatio").innerHTML =
+//   reducedPair[0] + " : " + reducedPair[1];
 document.getElementById("colorDepth").innerHTML =
   window.screen.colorDepth + " 位";
 
@@ -27,8 +29,6 @@ document.getElementById("memory").innerHTML =
   window.navigator.deviceMemory + " GB";
 document.getElementById("cpu").innerHTML =
   window.navigator.hardwareConcurrency + " 核";
-document.getElementById("touchscreen").innerHTML =
-  window.navigator.hardwareConcurrency > 1 ? "是" : "否";
 
 // Get device location
 const latitude_element = document.getElementById("latitude");
