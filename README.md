@@ -24,7 +24,7 @@ https://ip.jackjyq.com/
 
 ```bash
 # 配置虚拟环境
-python3.10 -m virtualenv venv
+python3.10 -m venv venv
 pip install -r requirements.txt
 
 # 下载 IP 数据库
@@ -50,3 +50,7 @@ gunicorn main
 ### 经纬度位置
 
 - [Nominatim](https://nominatim.org/)
+
+## 参考
+
+- [Information about your Web browser](http://www.alanwood.net/demos/browserinfo.html)

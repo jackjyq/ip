@@ -101,6 +101,19 @@
         <p>定位地址数据源: <a href="https://nominatim.org/">Nominatim</a></p>
       </section>
       <section>
+        <h1>用户设置</h1>
+        <ul>
+          <li>
+            <span>语言</span>
+            <span id="user_language">未知</span>
+          </li>
+          <li>
+            <span>时区</span>
+            <span id="user_timezone">未知</span>
+          </li>
+        </ul>
+      </section>
+      <section>
         <h1>用户设备</h1>
         <ul>
           <li>
@@ -119,10 +132,23 @@
         <p>用户代理: {{ user_agent }}</p>
       </section>
       <section>
+        <h1>性能</h1>
+        <ul>
+          <li>
+            <span>CPU</span>
+            <span id="cpu">未知</span>
+          </li>
+          <li>
+            <span>内存</span>
+            <span id="memory">未知</span>
+          </li>
+        </ul>
+      </section>
+      <section>
         <h1>屏幕</h1>
         <ul>
           <li>
-            <span>分辨率</span>
+            <span>逻辑分辨率</span>
             <span id="resolution">未知</span>
           </li>
           <li>
@@ -133,9 +159,16 @@
             <span>像素比</span>
             <span id="devicePixelRatio">1</span>
           </li>
+          <li>
+            <span>触屏</span>
+            <span id="touchscreen">否</span>
+          </li>
+          <li>
+            <span>色深</span>
+            <span id="colorDepth">未知</span>
+          </li>
         </ul>
       </section>
-      <p>注意: 此处分辨率为逻辑分辨率，而非物理分辨率</p>
       <section>
         <h1>捐赠项目</h1>
         <ul>

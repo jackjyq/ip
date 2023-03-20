@@ -19,6 +19,16 @@ document.getElementById("devicePixelRatio").innerHTML = window.devicePixelRatio;
 reducedPair = reduceFraction(window.screen.width, window.screen.height);
 document.getElementById("aspectRatio").innerHTML =
   reducedPair[0] + " : " + reducedPair[1];
+document.getElementById("colorDepth").innerHTML =
+  window.screen.colorDepth + " 位";
+
+// get Performance
+document.getElementById("memory").innerHTML =
+  window.navigator.deviceMemory + " GB";
+document.getElementById("cpu").innerHTML =
+  window.navigator.hardwareConcurrency + " 核";
+document.getElementById("touchscreen").innerHTML =
+  window.navigator.hardwareConcurrency > 1 ? "是" : "否";
 
 // Get device location
 const latitude_element = document.getElementById("latitude");
@@ -50,3 +60,8 @@ navigator.geolocation.getCurrentPosition(
     address_element.innerHTML = "未知";
   }
 );
+
+// get the User Settings
+document.getElementById("user_language").innerHTML = window.navigator.language;
+document.getElementById("user_timezone").innerHTML =
+  Intl.DateTimeFormat().resolvedOptions().timeZone;
