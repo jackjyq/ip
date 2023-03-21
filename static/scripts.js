@@ -26,7 +26,9 @@ document.getElementById("colorDepth").innerHTML =
 
 // get Performance
 document.getElementById("memory").innerHTML =
-  window.navigator.deviceMemory + " GB";
+  window.navigator.deviceMemory === undefined
+    ? "未知"
+    : window.navigator.deviceMemory + " GB";
 document.getElementById("cpu").innerHTML =
   window.navigator.hardwareConcurrency + " 核";
 
@@ -62,6 +64,21 @@ navigator.geolocation.getCurrentPosition(
 );
 
 // get the User Settings
-document.getElementById("user_language").innerHTML = window.navigator.language;
+document.getElementById("user_language").innerHTML =
+  window.navigator.languages.toString();
 document.getElementById("user_timezone").innerHTML =
   Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+// https://stackoverflow.com/questions/6131051/is-it-possible-to-find-out-what-is-the-monitor-frame-rate-in-javascript
+// Function that returns a Promise for the FPS
+const getFPS = () =>
+  new Promise((resolve) =>
+    requestAnimationFrame((t1) =>
+      requestAnimationFrame((t2) => resolve(1000 / (t2 - t1)))
+    )
+  );
+
+// Calling the function to get the FPS
+getFPS().then(
+  (fps) => (document.getElementById("fps").innerHTML = fps)
+);

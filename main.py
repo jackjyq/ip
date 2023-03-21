@@ -75,7 +75,8 @@ def get_index(request: WSGIRequest) -> HttpResponse:
     ip_address: str = get_ip_address(request)
     ip_location: Dict = get_ip_location(ip_address)
     user_agent: Dict = get_user_agent(request)
-    response: Dict = ip_location | user_agent
+    accept_language: Dict = {"accept_language": request.META["HTTP_ACCEPT_LANGUAGE"]}
+    response: Dict = ip_location | user_agent | accept_language
 
     def get_text_response(d: dict) -> str:
         s = ""

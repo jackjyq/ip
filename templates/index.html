@@ -104,14 +104,22 @@
         <h1>用户设置</h1>
         <ul>
           <li>
-            <span>语言</span>
+            <span>语言 I</span>
             <span id="user_language">未知</span>
+          </li>
+          <li>
+            <span>语言 II</span>
+            <span id="accept_language">{{ accept_language }}</span>
           </li>
           <li>
             <span>时区</span>
             <span id="user_timezone">未知</span>
           </li>
         </ul>
+        <p>
+          语言 I 来自 navigator.languages；语言 II 来自 Request Header 中
+          HTTP_ACCEPT_LANGUAGE
+        </p>
       </section>
       <section>
         <h1>用户设备</h1>
@@ -142,7 +150,12 @@
             <span>内存</span>
             <span id="memory">未知</span>
           </li>
+          <li>
+            <span>刷新率</span>
+            <span id="fps">0</span>
+          </li>
         </ul>
+        <p>刷新率为计算所得，数值可能受系统负载影响</p>
       </section>
       <section>
         <h1>屏幕</h1>
@@ -160,7 +173,7 @@
             <span id="colorDepth">未知</span>
           </li>
         </ul>
-        <p>注：物理分辨率 = 逻辑分辨率 x 缩放系数，不一定准确</p>
+        <p>物理分辨率 = 逻辑分辨率 x 缩放系数；可能受屏幕缩放比影响。</p>
       </section>
       <section>
         <h1>捐赠项目</h1>
