@@ -30,7 +30,9 @@ document.getElementById("memory").innerHTML =
     ? "未知"
     : window.navigator.deviceMemory + " GB";
 document.getElementById("cpu").innerHTML =
-  window.navigator.hardwareConcurrency + " 核";
+  window.navigator.hardwareConcurrency === undefined
+    ? "未知"
+    : window.navigator.hardwareConcurrency + " 核";
 
 // Get device location
 const latitude_element = document.getElementById("latitude");
@@ -79,6 +81,4 @@ const getFPS = () =>
   );
 
 // Calling the function to get the FPS
-getFPS().then(
-  (fps) => (document.getElementById("fps").innerHTML = fps)
-);
+getFPS().then((fps) => (document.getElementById("fps").innerHTML = fps));
