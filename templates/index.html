@@ -101,25 +101,21 @@
         <p>定位地址数据源: <a href="https://nominatim.org/">Nominatim</a></p>
       </section>
       <section>
-        <h1>用户设置</h1>
+        <h1>区域设置</h1>
         <ul>
           <li>
-            <span>语言 I</span>
+            <span>语言</span>
             <span id="user_language">未知</span>
-          </li>
-          <li>
-            <span>语言 II</span>
-            <span id="accept_language">{{ accept_language }}</span>
           </li>
           <li>
             <span>时区</span>
             <span id="user_timezone">未知</span>
           </li>
+          <li>
+            <span>时间</span>
+            <span id="user_time"></span>
+          </li>
         </ul>
-        <p>
-          语言 I 来自 navigator.languages；语言 II 来自 Request Header 中
-          HTTP_ACCEPT_LANGUAGE
-        </p>
       </section>
       <section>
         <h1>用户设备</h1>
@@ -151,11 +147,16 @@
             <span id="memory">未知</span>
           </li>
           <li>
-            <span>刷新率</span>
-            <span id="fps">0</span>
+            <span>显卡</span>
+            <span id="gpu">未知</span>
           </li>
         </ul>
-        <p>刷新率为计算所得，受系统负载影响，会有所波动。</p>
+        <p>
+          数据来源:
+          <a href="https://developer.mozilla.org/en-US/docs/Web/API/Navigator"
+            >Navigator</a
+          >
+        </p>
       </section>
       <section>
         <h1>屏幕</h1>
@@ -172,8 +173,50 @@
             <span>色深</span>
             <span id="colorDepth">未知</span>
           </li>
+          <li>
+            <span>刷新率</span>
+            <span id="fps">0</span>
+          </li>
         </ul>
-        <p>物理分辨率 = 逻辑分辨率 x 缩放系数；受屏幕缩放比影响，有可能不准确。</p>
+        <p>物理分辨率与刷新率为计算所得，可能不准确</p>
+      </section>
+      <section>
+        <h1>输入输出设备</h1>
+        <ul>
+          <li>
+            <span>触屏</span>
+            <span id="touchscreen">未知</span>
+          </li>
+          <li>
+            <span>摄像头</span>
+            <span id="webcams">未知</span>
+          </li>
+          <li>
+            <span>麦克风</span>
+            <span id="micros">未知</span>
+          </li>
+          <li>
+            <span>扬声器</span>
+            <span id="speakers">未知</span>
+          </li>
+        </ul>
+      </section>
+      <section>
+        <h1>反爬特征</h1>
+        <ul>
+          <li>
+            <span>webdriver</span>
+            <span id="webdriver">未知</span>
+          </li>
+          <li>
+            <span>chrome</span>
+            <span id="chrome">未知</span>
+          </li>
+          <li>
+            <span>插件数量</span>
+            <span id="plugins">未知</span>
+          </li>
+        </ul>
       </section>
       <section>
         <h1>捐赠项目</h1>

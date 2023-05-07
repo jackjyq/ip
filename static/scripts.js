@@ -82,3 +82,99 @@ const getFPS = () =>
 
 // Calling the function to get the FPS
 getFPS().then((fps) => (document.getElementById("fps").innerHTML = fps));
+
+// get user_time
+document.getElementById("user_time").innerHTML = new Date().toLocaleString(
+  "zh-CN"
+);
+
+// get gpu
+var canvas = document.createElement("canvas");
+var gl;
+var debugInfo;
+var vendor;
+var renderer;
+
+try {
+  gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+} catch (e) {}
+
+if (gl) {
+  debugInfo = gl.getExtension("WEBGL_debug_renderer_info");
+  vendor = gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL);
+  renderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
+}
+
+document.getElementById("gpu").innerHTML = renderer;
+
+// get touch screen
+document.getElementById("touchscreen").innerHTML =
+  navigator.maxTouchPoints > 1 ? "有" : "无";
+
+// get input devices
+// attribution:
+//  fpCollect.min.js
+function getInputDevices() {
+  return new Promise((resolve) => {
+    const deviceToCount = {
+      audiooutput: 0,
+      audioinput: 0,
+      videoinput: 0,
+    };
+
+    if (
+      navigator.mediaDevices &&
+      navigator.mediaDevices.enumerateDevices &&
+      navigator.mediaDevices.enumerateDevices.name !== "bound reportBlock"
+    ) {
+      // bound reportBlock occurs with Brave
+      navigator.mediaDevices.enumerateDevices().then((devices) => {
+        if (typeof devices !== "undefined") {
+          let name;
+          for (let i = 0; i < devices.length; i++) {
+            name = [devices[i].kind];
+            deviceToCount[name] = deviceToCount[name] + 1;
+          }
+          resolve({
+            speakers: deviceToCount.audiooutput,
+            micros: deviceToCount.audioinput,
+            webcams: deviceToCount.videoinput,
+          });
+        } else {
+          resolve({
+            speakers: 0,
+            micros: 0,
+            webcams: 0,
+          });
+        }
+      });
+    } else if (
+      navigator.mediaDevices &&
+      navigator.mediaDevices.enumerateDevices &&
+      navigator.mediaDevices.enumerateDevices.name === "bound reportBlock"
+    ) {
+      resolve({
+        devicesBlockedByBrave: true,
+      });
+    } else {
+      resolve({
+        speakers: 0,
+        micros: 0,
+        webcams: 0,
+      });
+    }
+  });
+}
+
+getInputDevices().then((value) => {
+  document.getElementById("speakers").innerHTML =
+    value.speakers > 0 ? "有" : "无";
+  document.getElementById("webcams").innerHTML =
+    value.webcams > 0 ? "有" : "无";
+  document.getElementById("micros").innerHTML = value.micros > 0 ? "有" : "无";
+});
+
+// get anti bot information
+document.getElementById("webdriver").innerHTML = navigator.webdriver;
+document.getElementById("chrome").innerHTML = window.chrome ? "是" : "否";
+document.getElementById("plugins").innerHTML = navigator.plugins.length;
