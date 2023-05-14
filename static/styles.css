@@ -22,21 +22,21 @@ footer {
 
 nav {
   background-color: #f9f9f9;
-  border-bottom: #00000010 solid 1px;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 0;
-  height: calc(16px + 16px * 2);
+  font-size: 20px;
+  height: calc(20px + 20px * 2);
 }
 
 nav header {
   text-align: center;
-  font-weight: 500;
-  padding-top: 16px;
+  padding-top: 20px;
 }
 
 nav div {
   position: absolute;
-  padding-top: 16px;
+  padding-top: 20px;
 }
 
 main {
