@@ -10,7 +10,7 @@ body {
   color: #000000de;
 }
 
-header,
+nav,
 main,
 footer {
   background-color: #f2f2f2;
@@ -20,12 +20,23 @@ footer {
   max-width: 768px;
 }
 
-header {
+nav {
+  background-color: #f9f9f9;
+  border-bottom: #00000010 solid 1px;
+  position: sticky;
+  top: 0;
+  height: calc(16px + 16px * 2);
+}
+
+nav header {
   text-align: center;
-  font-size: 20px;
   font-weight: 500;
-  height: 100px;
-  padding-top: 40px;
+  padding-top: 16px;
+}
+
+nav div {
+  position: absolute;
+  padding-top: 16px;
 }
 
 main {
@@ -61,7 +72,8 @@ li:not(:last-child) {
 }
 
 li > span:nth-child(1) {
-  flex-shrink: 0;
+  min-width: calc(16px * 5);
+  word-break: break-all;
 }
 
 li > span:nth-child(2) {
@@ -83,15 +95,4 @@ footer p {
 a {
   color: #3b77e1;
   text-decoration: none;
-}
-
-/* mobile layout */
-@media only screen and (max-width: 768px) {
-  header {
-    display: none;
-  }
-  main {
-    /* 100vh - footer */
-    min-height: calc(100vh - 80px);
-  }
 }

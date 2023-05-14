@@ -1,6 +1,9 @@
 {% extends "base.html" %} {% load static %} {% block scripts %}
 <script src="{% static 'navigator.js' %}" defer></script>
-{% endblock %} {% block main %}
+{% endblock %} {% block nav %}
+<div><a href="../">&lt; 后退</a></div>
+<header>考拉 IP 归属地</header>
+{% endblock %}{% block main %}
 <section id="navigator"></section>
 <p>
   Reference:

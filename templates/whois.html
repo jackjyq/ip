@@ -1,5 +1,7 @@
-{% extends "base.html" %} {% load static %} {% block scripts %} {% endblock %}
-{% block main %}
+{% extends "base.html" %} {% load static %} {%block nav %}
+<div><a href="../">&lt; 后退</a></div>
+<header>考拉 IP 归属地</header>
+{% endblock %} {% block main %}
 <section id="whois">
   <ul>
     {% for line in whois %}
