@@ -1,256 +1,175 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="zh-Hans">
-  <head>
-    <meta http-equiv="content-type" content="txt/html; charset=utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="keywords"
-      content="IP地址, IP地址查询, IP归属地, IP属地, 我的手机IP地址, 浏览器版本, 浏览器, 操作系统版本"
-    />
-    <meta
-      name="description"
-      content="考拉IP归属地，可查询用户IP地址及归属地, 及设备型号、操作系统及浏览器版本。"
-    />
-    <title>考拉IP归属地</title>
-    <!-- import favicon -->
-    <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="{% static 'favicon_io/apple-touch-icon.png' %}"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="32x32"
-      href="{% static 'favicon_io/favicon-32x32.png' %}"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="16x16"
-      href="{% static 'favicon_io/favicon-16x16.png' %}"
-    />
-    <link
-      rel="icon"
-      type="image/vnd.microsoft.icon"
-      sizes="48x48"
-      href="{% static 'favicon_io/favicon.ico' %}"
-    />
-    <link rel="manifest" href="{% static 'favicon_io/site.webmanifest' %}" />
-    <!-- import css -->
-    <link rel="stylesheet" type="text/css" href="{% static 'reset.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}" />
-    <!-- import js -->
-    <script src="{% static 'scripts.js' %}" defer></script>
-    <!-- Google tag (gtag.js) -->
-    <script
-      async
-      src="https://www.googletagmanager.com/gtag/js?id=G-YXC7ESZ82P"
-    ></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag("js", new Date());
-
-      gtag("config", "G-YXC7ESZ82P");
-    </script>
-  </head>
-  <body>
-    <header>考拉 IP 归属地</header>
-    <main>
-      <section>
-        <h1>IP 归属地</h1>
-        <ul>
-          <li>
-            <span>IP 地址</span>
-            <span>{{ ip }}</span>
-          </li>
-          <li>
-            <span>网络提供商</span>
-            <span>{{ isp }}</span>
-          </li>
-          <li>
-            <span>归属地</span>
-            <span>{{ country }}, {{ province }}, {{ city }}</span>
-          </li>
-        </ul>
-        <p>点击<a href="./whois">此处</a>，查看更多信息</p>
-        <p>
-          IP 归属地数据源:
-          <a href="{{ database_href }}">{{ database_name }}</a>
-        </p>
-      </section>
-      <section>
-        <h1>系统定位</h1>
-        <ul>
-          <li>
-            <span>经度</span>
-            <span id="longitude">未知</span>
-          </li>
-          <li>
-            <span>纬度</span>
-            <span id="latitude">未知</span>
-          </li>
-          <li>
-            <span>定位地址</span>
-            <span id="address">未知</span>
-          </li>
-        </ul>
-        <p>定位地址数据源: <a href="https://nominatim.org/">Nominatim</a></p>
-      </section>
-      <section>
-        <h1>区域设置</h1>
-        <ul>
-          <li>
-            <span>语言</span>
-            <span id="user_language">未知</span>
-          </li>
-          <li>
-            <span>时区</span>
-            <span id="user_timezone">未知</span>
-          </li>
-          <li>
-            <span>时间</span>
-            <span id="user_time"></span>
-          </li>
-        </ul>
-      </section>
-      <section>
-        <h1>用户设备</h1>
-        <ul>
-          <li>
-            <span>浏览器</span>
-            <span>{{ browser }}</span>
-          </li>
-          <li>
-            <span>操作系统</span>
-            <span>{{ os }}</span>
-          </li>
-          <li>
-            <span>设备</span>
-            <span>{{ device }}</span>
-          </li>
-        </ul>
-        <p>点击<a href="./headers">此处</a>，查看更多信息</p>
-        <p>用户代理: {{ user_agent }}</p>
-      </section>
-      <section>
-        <h1>性能</h1>
-        <ul>
-          <li>
-            <span>CPU</span>
-            <span id="cpu">未知</span>
-          </li>
-          <li>
-            <span>内存</span>
-            <span id="memory">未知</span>
-          </li>
-          <li>
-            <span>显卡</span>
-            <span id="gpu">未知</span>
-          </li>
-        </ul>
-        <p>
-          数据来源:
-          <a href="https://developer.mozilla.org/en-US/docs/Web/API/Navigator"
-            >Navigator</a
-          >
-        </p>
-      </section>
-      <section>
-        <h1>屏幕</h1>
-        <ul>
-          <li>
-            <span>逻辑分辨率</span>
-            <span id="logicResolution">未知</span>
-          </li>
-          <li>
-            <span>物理分辨率</span>
-            <span id="resolution">1</span>
-          </li>
-          <li>
-            <span>色深</span>
-            <span id="colorDepth">未知</span>
-          </li>
-          <li>
-            <span>刷新率</span>
-            <span id="fps">0</span>
-          </li>
-        </ul>
-        <p>物理分辨率与刷新率为计算所得，可能不准确</p>
-      </section>
-      <section>
-        <h1>输入输出设备</h1>
-        <ul>
-          <li>
-            <span>触屏</span>
-            <span id="touchscreen">未知</span>
-          </li>
-          <li>
-            <span>摄像头</span>
-            <span id="webcams">未知</span>
-          </li>
-          <li>
-            <span>麦克风</span>
-            <span id="micros">未知</span>
-          </li>
-          <li>
-            <span>扬声器</span>
-            <span id="speakers">未知</span>
-          </li>
-        </ul>
-      </section>
-      <section>
-        <h1>反爬特征</h1>
-        <ul>
-          <li>
-            <span>webdriver</span>
-            <span id="webdriver">未知</span>
-          </li>
-          <li>
-            <span>chrome</span>
-            <span id="chrome">未知</span>
-          </li>
-          <li>
-            <span>插件数量</span>
-            <span id="plugins">未知</span>
-          </li>
-        </ul>
-        <p>点击<a href="./navigator">此处</a>，查看更多信息</p>
-      </section>
-      <section>
-        <h1>捐赠项目</h1>
-        <ul>
-          <li>
-            <a href="{% static 'donate/微信-667x667.png' %}"
-              ><span>微信</span></a
-            >
-          </li>
-          <li>
-            <a href="{% static 'donate/支付宝-667x667.png' %}"
-              ><span>支付宝</span></a
-            >
-          </li>
-        </ul>
-      </section>
-    </main>
-    <footer>
-      <p>
-        <a href="https://gitee.com/songyustudio/ip/blob/master/README.md"
-          >API 文档</a
-        >
-      </p>
-      <p>
-        <a href="https://gitee.com/songyustudio/ip">码云</a> |
-        <a href="https://github.com/jackjyq/ip">Github</a>
-      </p>
-      <p>
-        MIT License © 2022
-        <a href="https://www.jackjyq.com">松鱼工作室</a>
-      </p>
-    </footer>
-  </body>
-</html>
+{% extends "base.html" %} {% load static %} {% block scripts %}
+<script src="{% static 'index.js' %}" defer></script>
+{% endblock %} {% block main %}
+<section>
+  <h1>IP 归属地</h1>
+  <ul>
+    <li>
+      <span>IP 地址</span>
+      <span>{{ ip }}</span>
+    </li>
+    <li>
+      <span>网络提供商</span>
+      <span>{{ isp }}</span>
+    </li>
+    <li>
+      <span>归属地</span>
+      <span>{{ country }}, {{ province }}, {{ city }}</span>
+    </li>
+  </ul>
+  <p>点击<a href="./whois">此处</a>，查看更多信息</p>
+  <p>
+    IP 归属地数据源:
+    <a href="{{ database_href }}">{{ database_name }}</a>
+  </p>
+</section>
+<section>
+  <h1>系统定位</h1>
+  <ul>
+    <li>
+      <span>经度</span>
+      <span id="longitude">未知</span>
+    </li>
+    <li>
+      <span>纬度</span>
+      <span id="latitude">未知</span>
+    </li>
+    <li>
+      <span>定位地址</span>
+      <span id="address">未知</span>
+    </li>
+  </ul>
+  <p>定位地址数据源: <a href="https://nominatim.org/">Nominatim</a></p>
+</section>
+<section>
+  <h1>区域设置</h1>
+  <ul>
+    <li>
+      <span>语言</span>
+      <span id="user_language">未知</span>
+    </li>
+    <li>
+      <span>时区</span>
+      <span id="user_timezone">未知</span>
+    </li>
+    <li>
+      <span>时间</span>
+      <span id="user_time"></span>
+    </li>
+  </ul>
+</section>
+<section>
+  <h1>用户设备</h1>
+  <ul>
+    <li>
+      <span>浏览器</span>
+      <span>{{ browser }}</span>
+    </li>
+    <li>
+      <span>操作系统</span>
+      <span>{{ os }}</span>
+    </li>
+    <li>
+      <span>设备</span>
+      <span>{{ device }}</span>
+    </li>
+  </ul>
+  <p>点击<a href="./headers">此处</a>，查看更多信息</p>
+  <p>用户代理: {{ user_agent }}</p>
+</section>
+<section>
+  <h1>性能</h1>
+  <ul>
+    <li>
+      <span>CPU</span>
+      <span id="cpu">未知</span>
+    </li>
+    <li>
+      <span>内存</span>
+      <span id="memory">未知</span>
+    </li>
+    <li>
+      <span>显卡</span>
+      <span id="gpu">未知</span>
+    </li>
+  </ul>
+  <p>
+    数据来源:
+    <a href="https://developer.mozilla.org/en-US/docs/Web/API/Navigator"
+      >Navigator</a
+    >
+  </p>
+</section>
+<section>
+  <h1>屏幕</h1>
+  <ul>
+    <li>
+      <span>逻辑分辨率</span>
+      <span id="logicResolution">未知</span>
+    </li>
+    <li>
+      <span>物理分辨率</span>
+      <span id="resolution">1</span>
+    </li>
+    <li>
+      <span>色深</span>
+      <span id="colorDepth">未知</span>
+    </li>
+    <li>
+      <span>刷新率</span>
+      <span id="fps">0</span>
+    </li>
+  </ul>
+  <p>物理分辨率与刷新率为计算所得，可能不准确</p>
+</section>
+<section>
+  <h1>输入输出设备</h1>
+  <ul>
+    <li>
+      <span>触屏</span>
+      <span id="touchscreen">未知</span>
+    </li>
+    <li>
+      <span>摄像头</span>
+      <span id="webcams">未知</span>
+    </li>
+    <li>
+      <span>麦克风</span>
+      <span id="micros">未知</span>
+    </li>
+    <li>
+      <span>扬声器</span>
+      <span id="speakers">未知</span>
+    </li>
+  </ul>
+</section>
+<section>
+  <h1>反爬特征</h1>
+  <ul>
+    <li>
+      <span>webdriver</span>
+      <span id="webdriver">未知</span>
+    </li>
+    <li>
+      <span>chrome</span>
+      <span id="chrome">未知</span>
+    </li>
+    <li>
+      <span>插件数量</span>
+      <span id="plugins">未知</span>
+    </li>
+  </ul>
+  <p>点击<a href="./navigator">此处</a>，查看更多信息</p>
+</section>
+<section>
+  <h1>捐赠项目</h1>
+  <ul>
+    <li>
+      <a href="{% static 'donate/微信-667x667.png' %}"><span>微信</span></a>
+    </li>
+    <li>
+      <a href="{% static 'donate/支付宝-667x667.png' %}"><span>支付宝</span></a>
+    </li>
+  </ul>
+</section>
+{% endblock %}

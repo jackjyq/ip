@@ -1,92 +1,14 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="zh-Hans">
-  <head>
-    <meta http-equiv="content-type" content="txt/html; charset=utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="keywords"
-      content="IP地址, IP地址查询, IP归属地, IP属地, 我的手机IP地址, 浏览器版本, 浏览器, 操作系统版本"
-    />
-    <meta
-      name="description"
-      content="考拉IP归属地，可查询用户IP地址及归属地, 及设备型号、操作系统及浏览器版本。"
-    />
-    <title>考拉IP归属地</title>
-    <!-- import favicon -->
-    <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="{% static 'favicon_io/apple-touch-icon.png' %}"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="32x32"
-      href="{% static 'favicon_io/favicon-32x32.png' %}"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="16x16"
-      href="{% static 'favicon_io/favicon-16x16.png' %}"
-    />
-    <link
-      rel="icon"
-      type="image/vnd.microsoft.icon"
-      sizes="48x48"
-      href="{% static 'favicon_io/favicon.ico' %}"
-    />
-    <link rel="manifest" href="{% static 'favicon_io/site.webmanifest' %}" />
-    <!-- import css -->
-    <link rel="stylesheet" type="text/css" href="{% static 'reset.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}" />
-    <!-- import js -->
-    <!-- <script src="{% static 'navigator.js' %}" defer></script> -->
-    <!-- Google tag (gtag.js) -->
-    <script
-      async
-      src="https://www.googletagmanager.com/gtag/js?id=G-YXC7ESZ82P"
-    ></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag("js", new Date());
+{% extends "base.html" %} {% load static %} {% block scripts %} {% endblock %}
+{% block main %}
+<section id="whois">
+  <ul>
+    {% for line in whois %}
+    <li>
+      <span> {{ line.0 }} </span>
+      <span> {{ line.1 }} </span>
+    </li>
 
-      gtag("config", "G-YXC7ESZ82P");
-    </script>
-  </head>
-  <body>
-    <header>考拉 IP 归属地</header>
-    <main>
-      <section id="whois">
-        <ul>
-          {% for line in whois %}
-          <li>
-            <span> {{ line.0 }} </span>
-            <span> {{ line.1 }} </span>
-          </li>
-
-          {% endfor %}
-        </ul>
-      </section>
-    </main>
-    <footer>
-      <p>
-        <a href="https://gitee.com/songyustudio/ip/blob/master/README.md"
-          >API 文档</a
-        >
-      </p>
-      <p>
-        <a href="https://gitee.com/songyustudio/ip">码云</a> |
-        <a href="https://github.com/jackjyq/ip">Github</a>
-      </p>
-      <p>
-        MIT License © 2022
-        <a href="https://www.jackjyq.com">松鱼工作室</a>
-      </p>
-    </footer>
-  </body>
-</html>
+    {% endfor %}
+  </ul>
+</section>
+{% endblock %}
