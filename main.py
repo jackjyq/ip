@@ -212,7 +212,11 @@ def get_navigator(request: WSGIRequest) -> HttpResponse:
 def get_whois(request: WSGIRequest) -> HttpResponse:
     ip = get_ip_address(request)
     whois = sh.Command("whois")
-    return HttpResponse(whois(ip))
+    return render(
+        request,
+        "whois.html",
+        context={"whois": [line.split(": ", 2) for line in whois(ip).splitlines()]},
+    )
 
 
 urlpatterns = [
