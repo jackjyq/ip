@@ -212,10 +212,13 @@ def get_navigator(request: WSGIRequest) -> HttpResponse:
 def get_whois(request: WSGIRequest) -> HttpResponse:
     ip = get_ip_address(request)
     whois = sh.Command("whois")
+    whois_info = whois(ip)
+    if not whois_info:
+        whois_info = "No whois information found."
     return render(
         request,
         "whois.html",
-        context={"whois": [line.split(": ", 2) for line in whois(ip).splitlines()]},
+        context={"whois": [line.split(": ", 2) for line in whois_info.splitlines()]},
     )
 
 
