@@ -166,15 +166,15 @@ function getInputDevices() {
   });
 }
 
-getInputDevices().then((value) => {
-  document.getElementById("speakers").innerHTML =
-    value.speakers > 0 ? "有" : "无";
-  document.getElementById("webcams").innerHTML =
-    value.webcams > 0 ? "有" : "无";
-  document.getElementById("micros").innerHTML = value.micros > 0 ? "有" : "无";
-});
+// getInputDevices().then((value) => {
+//   document.getElementById("speakers").innerHTML =
+//     value.speakers > 0 ? "有" : "无";
+//   document.getElementById("webcams").innerHTML =
+//     value.webcams > 0 ? "有" : "无";
+//   document.getElementById("micros").innerHTML = value.micros > 0 ? "有" : "无";
+// });
 
 // get anti bot information
-document.getElementById("webdriver").innerHTML = navigator.webdriver;
-document.getElementById("chrome").innerHTML = window.chrome ? "是" : "否";
-document.getElementById("plugins").innerHTML = navigator.plugins.length;
+// document.getElementById("webdriver").innerHTML = navigator.webdriver;
+// document.getElementById("chrome").innerHTML = window.chrome ? "是" : "否";
+// document.getElementById("plugins").innerHTML = navigator.plugins.length;

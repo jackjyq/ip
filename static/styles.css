@@ -65,6 +65,11 @@ li {
   display: flex;
   justify-content: space-between;
   column-gap: 12px;
+  word-break: break-all;
+}
+
+li[onClick] {
+  cursor: pointer;
 }
 
 li:not(:last-child) {
@@ -73,12 +78,10 @@ li:not(:last-child) {
 
 li > span:nth-child(1) {
   min-width: calc(16px * 5);
-  word-break: break-all;
 }
 
 li > span:nth-child(2) {
   color: #0000008a;
-  word-break: break-all;
 }
 
 footer {

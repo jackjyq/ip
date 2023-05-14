@@ -18,8 +18,11 @@
       <span>归属地</span>
       <span>{{ country }}, {{ province }}, {{ city }}</span>
     </li>
+    <li onclick="location.href='./whois';">
+      <span>查看 whois 信息</span>
+      <span>&gt;</span>
+    </li>
   </ul>
-  <p>点击<a href="./whois">此处</a>，查看更多信息</p>
   <p>
     IP 归属地数据源:
     <a href="{{ database_href }}">{{ database_name }}</a>
@@ -40,8 +43,34 @@
       <span>定位地址</span>
       <span id="address">未知</span>
     </li>
+    <li onclick="location.href='./navigator';">
+      <span>查看 navigator 信息</span>
+      <span>&gt;</span>
+    </li>
   </ul>
   <p>定位地址数据源: <a href="https://nominatim.org/">Nominatim</a></p>
+</section>
+<section>
+  <h1>用户设备</h1>
+  <ul>
+    <li>
+      <span>浏览器</span>
+      <span>{{ browser }}</span>
+    </li>
+    <li>
+      <span>操作系统</span>
+      <span>{{ os }}</span>
+    </li>
+    <li>
+      <span>设备</span>
+      <span>{{ device }}</span>
+    </li>
+    <li onclick="location.href='./headers';">
+      <span>查看 headers 信息</span>
+      <span>&gt;</span>
+    </li>
+  </ul>
+  <p>用户代理: {{ user_agent }}</p>
 </section>
 <section>
   <h1>区域设置</h1>
@@ -61,25 +90,6 @@
   </ul>
 </section>
 <section>
-  <h1>用户设备</h1>
-  <ul>
-    <li>
-      <span>浏览器</span>
-      <span>{{ browser }}</span>
-    </li>
-    <li>
-      <span>操作系统</span>
-      <span>{{ os }}</span>
-    </li>
-    <li>
-      <span>设备</span>
-      <span>{{ device }}</span>
-    </li>
-  </ul>
-  <p>点击<a href="./headers">此处</a>，查看更多信息</p>
-  <p>用户代理: {{ user_agent }}</p>
-</section>
-<section>
   <h1>性能</h1>
   <ul>
     <li>
@@ -94,13 +104,12 @@
       <span>显卡</span>
       <span id="gpu">未知</span>
     </li>
+    <li>
+      <span>刷新率</span>
+      <span id="fps">0</span>
+    </li>
   </ul>
-  <p>
-    数据来源:
-    <a href="https://developer.mozilla.org/en-US/docs/Web/API/Navigator"
-      >Navigator</a
-    >
-  </p>
+  <p>刷新率为计算所得，可能不准确</p>
 </section>
 <section>
   <h1>屏幕</h1>
@@ -118,19 +127,15 @@
       <span id="colorDepth">未知</span>
     </li>
     <li>
-      <span>刷新率</span>
-      <span id="fps">0</span>
-    </li>
-  </ul>
-  <p>物理分辨率与刷新率为计算所得，可能不准确</p>
-</section>
-<section>
-  <h1>输入输出设备</h1>
-  <ul>
-    <li>
       <span>触屏</span>
       <span id="touchscreen">未知</span>
     </li>
+  </ul>
+  <p>物理分辨率为计算所得，可能不准确</p>
+</section>
+<!-- <section>
+  <h1>输入输出设备</h1>
+  <ul>
     <li>
       <span>摄像头</span>
       <span id="webcams">未知</span>
@@ -144,8 +149,8 @@
       <span id="speakers">未知</span>
     </li>
   </ul>
-</section>
-<section>
+</section> -->
+<!-- <section>
   <h1>反爬特征</h1>
   <ul>
     <li>
@@ -162,7 +167,7 @@
     </li>
   </ul>
   <p>点击<a href="./navigator">此处</a>，查看更多信息</p>
-</section>
+</section> -->
 <section>
   <h1>捐赠项目</h1>
   <ul>
