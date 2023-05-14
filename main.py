@@ -3,7 +3,7 @@ import logging
 import os
 import sys
 from typing import Dict
-
+import sh
 import geoip2.database
 from django.conf import settings
 from django.core.handlers.wsgi import WSGIRequest
@@ -209,8 +209,10 @@ def get_navigator(request: WSGIRequest) -> HttpResponse:
     )
 
 
-def get_whois() -> HttpResponse:
-    pass
+def get_whois(request: WSGIRequest) -> HttpResponse:
+    ip = get_ip_address(request)
+    whois = sh.Command("whois")
+    return HttpResponse(whois(ip))
 
 
 urlpatterns = [
