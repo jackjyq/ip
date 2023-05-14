@@ -75,7 +75,9 @@ def get_index(request: WSGIRequest) -> HttpResponse:
     ip_address: str = get_ip_address(request)
     ip_location: Dict = get_ip_location(ip_address)
     user_agent: Dict = get_user_agent(request)
-    accept_language: Dict = {"accept_language": request.META.get("HTTP_ACCEPT_LANGUAGE")}
+    accept_language: Dict = {
+        "accept_language": request.META.get("HTTP_ACCEPT_LANGUAGE")
+    }
     response: Dict = ip_location | user_agent | accept_language
 
     def get_text_response(d: dict) -> str:
@@ -172,7 +174,7 @@ def get_ip_location(ip_address: str) -> Dict:
     return ip2region_location
 
 
-def get_address_from_coordinates(request: WSGIRequest) -> str:
+def get_address_from_coordinates(request: WSGIRequest) -> JsonResponse:
     """get address from coordinates
 
     Returns:
@@ -189,9 +191,34 @@ def get_address_from_coordinates(request: WSGIRequest) -> str:
     return JsonResponse({"address": location.address})
 
 
+def get_headers(request: WSGIRequest) -> HttpResponse:
+    headers = {}
+    for attribute in sorted(dict(request.headers.items())):
+        headers[attribute] = request.headers[attribute]
+    return render(
+        request,
+        "headers.html",
+        context={"headers": headers},
+    )
+
+
+def get_navigator(request: WSGIRequest) -> HttpResponse:
+    return render(
+        request,
+        "navigator.html",
+    )
+
+
+def get_whois() -> HttpResponse:
+    pass
+
+
 urlpatterns = [
     path("", get_index),
     path("address", get_address_from_coordinates),
+    path("headers", get_headers),
+    path("navigator", get_navigator),
+    path("whois", get_whois),
 ]
 application = get_wsgi_application()
 application = WhiteNoise(application, root="./static", prefix="static/")
