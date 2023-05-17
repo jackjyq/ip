@@ -8,15 +8,19 @@
 
 ### 网页格式
 
-https://ip.jackjyq.com/
+浏览器访问：https://ip.jackjyq.com/
 
 ### 文本格式
 
-`curl 'https://ip.jackjyq.com/'`
+浏览器访问：http://127.0.0.1:8000/text
+
+或: `curl 'https://ip.jackjyq.com/'`
 
 ### JSON 格式
 
-`curl 'https://ip.jackjyq.com/' -H 'Content-Type: application/json'`
+浏览器访问：http://127.0.0.1:8000/json
+
+或: `curl 'https://ip.jackjyq.com/' -H 'Content-Type: application/json'`
 
 ## 部署运行
 
@@ -36,7 +40,8 @@ chmod +x download_ip_data.sh
 
 ```bash
 DEBUG=True python main.py runserver
-# 或者
+
+# 或
 gunicorn main
 ```
 

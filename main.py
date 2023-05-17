@@ -88,13 +88,13 @@ def get_index(request: WSGIRequest) -> HttpResponse:
             s += key + ": " + str(d[key]) + "\r\n"
         return s
 
-    if request.content_type == "application/json":
+    if request.content_type == "application/json" or "json" in request.path:
         logger.info(f"API: {json.dumps(response, ensure_ascii=False, sort_keys=True)}")
         return JsonResponse(
             response,
             json_dumps_params={"ensure_ascii": False, "indent": 2},
         )
-    elif user_agent["user_agent"].startswith("curl"):
+    elif user_agent["user_agent"].startswith("curl") or "text" in request.path:
         logger.info(f"TEXT: {json.dumps(response, ensure_ascii=False, sort_keys=True)}")
         return HttpResponse(get_text_response(response), content_type="text/plain")
     else:
@@ -263,6 +263,8 @@ def get_more(request: WSGIRequest) -> HttpResponse:
 
 urlpatterns = [
     path("", get_index),
+    path("json", get_index),
+    path("text", get_index),
     path("address", get_address_from_coordinates),
     path("headers", get_headers),
     path("navigator", get_navigator),
