@@ -1,0 +1,83 @@
+{% extends "base.html" %} {% load static %} {% block scripts %}
+<script src="{% static 'more.js' %}" defer></script>
+{% endblock %}{%block nav %}
+<div><a href="../">&lt; 后退</a></div>
+<header>更多信息</header>
+{% endblock %} {% block main %}
+<section>
+  <h1>区域设置</h1>
+  <ul>
+    <li>
+      <span>语言</span>
+      <span id="user_language">未知</span>
+    </li>
+    <li>
+      <span>时区</span>
+      <span id="user_timezone">未知</span>
+    </li>
+    <li>
+      <span>时间</span>
+      <span id="user_time"></span>
+    </li>
+  </ul>
+</section>
+<section>
+  <h1>性能</h1>
+  <ul>
+    <li>
+      <span>CPU</span>
+      <span id="cpu">未知</span>
+    </li>
+    <li>
+      <span>逻辑分辨率</span>
+      <span id="logicResolution">未知</span>
+    </li>
+    <li>
+      <span>内存</span>
+      <span id="memory">未知</span>
+    </li>
+    <li>
+      <span>刷新率</span>
+      <span id="fps">0</span>
+    </li>
+  </ul>
+</section>
+<section>
+  <h1>输入输出设备</h1>
+  <ul>
+    <li>
+      <span>摄像头</span>
+      <span id="webcams">未知</span>
+    </li>
+    <li>
+      <span>麦克风</span>
+      <span id="micros">未知</span>
+    </li>
+    <li>
+      <span>扬声器</span>
+      <span id="speakers">未知</span>
+    </li>
+    <li>
+      <span>触屏</span>
+      <span id="touchscreen">未知</span>
+    </li>
+  </ul>
+</section>
+<section>
+  <h1>反爬特征</h1>
+  <ul>
+    <li>
+      <span>webdriver</span>
+      <span id="webdriver">未知</span>
+    </li>
+    <li>
+      <span>chrome</span>
+      <span id="chrome">未知</span>
+    </li>
+    <li>
+      <span>插件数量</span>
+      <span id="plugins">未知</span>
+    </li>
+  </ul>
+</section>
+{% endblock %}

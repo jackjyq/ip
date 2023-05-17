@@ -3,7 +3,6 @@ for (const attribute in window.navigator) {
   attributes.push(attribute);
 }
 attributes.sort();
-console.log(attributes);
 // Navigator
 const navigator = document.getElementById("navigator");
 // Create h1 element

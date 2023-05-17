@@ -222,12 +222,20 @@ def get_whois(request: WSGIRequest) -> HttpResponse:
     )
 
 
+def get_more(request: WSGIRequest) -> HttpResponse:
+    return render(
+        request,
+        "more.html",
+    )
+
+
 urlpatterns = [
     path("", get_index),
     path("address", get_address_from_coordinates),
     path("headers", get_headers),
     path("navigator", get_navigator),
     path("whois", get_whois),
+    path("more", get_more),
 ]
 application = get_wsgi_application()
 application = WhiteNoise(application, root="./static", prefix="static/")
