@@ -5,6 +5,7 @@ import sys
 from typing import Dict
 import sh
 import geoip2.database
+from geoip2.errors import AddressNotFoundError
 from django.conf import settings
 from django.core.handlers.wsgi import WSGIRequest
 from django.core.management import execute_from_command_line
@@ -103,12 +104,15 @@ def get_index(request: WSGIRequest) -> HttpResponse:
 def get_ip_address(request: WSGIRequest) -> str:
     """to get the client ip address even if behind nginx
 
-    ref:  https://stackoverflow.com/a/5976065
+    Returns:
+        "0.0.0.0" if not found
+    Refs:
+      s  https://stackoverflow.com/a/5976065
     """
     if x_forwarded_for := request.META.get("HTTP_X_FORWARDED_FOR"):
         ip_address = x_forwarded_for.split(",")[-1].strip()
     else:
-        ip_address = request.META.get("REMOTE_ADDR")
+        ip_address = request.META.get("REMOTE_ADDR", "0.0.0.0")
     return ip_address
 
 
@@ -168,7 +172,7 @@ def get_ip_location(ip_address: str) -> Dict:
                 "database_href": "https://www.maxmind.com/",
             }
             return geolite2_location
-        except geoip2.errors.AddressNotFoundError:
+        except AddressNotFoundError:
             pass
     # otherwise, fall back to use ip2region database
     return ip2region_location
