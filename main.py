@@ -16,8 +16,9 @@ from django.urls import path
 from geopy.geocoders import Nominatim
 from user_agents import parse
 from whitenoise import WhiteNoise
-
+from file_read_backwards import FileReadBackwards
 from ip2Region import Ip2Region
+import datetime
 
 # Django server settings
 BASE_DIR = os.path.dirname(__file__)
@@ -98,7 +99,11 @@ def get_index(request: WSGIRequest) -> HttpResponse:
         return HttpResponse(get_text_response(response), content_type="text/plain")
     else:
         logger.info(f"Web: {json.dumps(response, ensure_ascii=False, sort_keys=True)}")
-        return render(request, "index.html", response)
+        return render(
+            request,
+            "index.html",
+            response | {"visits": get_number_visits(datetime.timedelta(days=1))},
+        )
 
 
 def get_ip_address(request: WSGIRequest) -> str:
@@ -129,6 +134,29 @@ def get_user_agent(request: WSGIRequest) -> Dict:
         "os": user_agent.get_os(),
         "device": user_agent.get_device(),
     }
+
+
+def get_number_visits(times: datetime.timedelta) -> int:
+    """get the number of visits from log file
+
+    Returns:
+        number of visits in the past times
+    """
+    number_visits = 0
+    with FileReadBackwards("./django.log", encoding="utf-8") as frb:
+        # getting lines by lines starting from the last line up
+        for line in frb:
+            try:
+                line_time = datetime.datetime.strptime(
+                    line.split(" - ")[0], "%Y-%m-%d %H:%M:%S,%f"
+                )
+            except ValueError:
+                continue
+            if datetime.datetime.now() - line_time < times:
+                number_visits += 1
+            else:
+                break
+    return number_visits
 
 
 def get_ip_location(ip_address: str) -> Dict:

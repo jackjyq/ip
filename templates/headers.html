@@ -2,24 +2,34 @@
 <div><a href="../">&lt; 后退</a></div>
 <header>Headers 信息</header>
 {% endblock %}{% block main %}
-<main>
-  <section id="request">
-    <h1>Request</h1>
-    <ul>
-      {% for attribute, value in headers.items %}
-      <li>
-        <span>{{ attribute }}</span>
-        <span>{{ value }}</span>
-      </li>
-      {% endfor %}
-    </ul>
-    <p>
-      Reference:
-      <a
-        href="https://docs.djangoproject.com/en/4.2/ref/request-response/#django.http.HttpRequest.headers"
-        >Django request.headers</a
-      >
-    </p>
-  </section>
-  {% endblock %}
-</main>
+<section id="request">
+  <h1>Request</h1>
+  <ul>
+    {% for attribute, value in headers.items %}
+    <li>
+      <span>{{ attribute }}</span>
+      <span>{{ value }}</span>
+    </li>
+    {% endfor %}
+  </ul>
+  <p>
+    Reference:
+    <a
+      href="https://docs.djangoproject.com/en/4.2/ref/request-response/#django.http.HttpRequest.headers"
+      >Django request.headers</a
+    >
+  </p>
+</section>
+{% endblock %} {% block footer %}
+<p>
+  <a href="https://gitee.com/songyustudio/ip/blob/master/README.md">API 文档</a>
+</p>
+<p>
+  <a href="https://gitee.com/songyustudio/ip">码云</a> |
+  <a href="https://github.com/jackjyq/ip">Github</a>
+</p>
+<p>
+  MIT License © 2022
+  <a href="https://www.jackjyq.com">松鱼工作室</a>
+</p>
+{% endblock %}

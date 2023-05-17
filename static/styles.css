@@ -86,8 +86,8 @@ li > span:nth-child(2) {
 
 footer {
   text-align: center;
-  height: 80px;
   padding-top: 32px;
+  padding-bottom: 16px;
 }
 
 footer p {
