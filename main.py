@@ -17,7 +17,7 @@ from geopy.geocoders import Nominatim
 from user_agents import parse
 from whitenoise import WhiteNoise
 from file_read_backwards import FileReadBackwards
-from ip2Region import Ip2Region
+from xdbSearcher import XdbSearcher
 import datetime
 from django.views.generic.base import TemplateView
 
@@ -67,7 +67,7 @@ logger.addHandler(console)
 
 # Other services initialization
 # https://github.com/lionsoul2014/ip2region
-ip2region_reader = Ip2Region("./ip_data/ip2region/ip2region.db")
+ip2region_reader = XdbSearcher("./ip_data/ip2region/ip2region.xdb")
 # https://geoip2.readthedocs.io/en/latest/
 geolite2_reader = geoip2.database.Reader("./ip_data/GeoLite2/GeoLite2-City.mmdb")
 # https://geopy.readthedocs.io/en/stable/
@@ -166,9 +166,7 @@ def get_ip_location(ip_address: str) -> Dict:
     None when the field is unknown
     """
     # use ip2region database to get the country name
-    ip2region_result = (
-        ip2region_reader.btreeSearch(ip_address)["region"].decode().split("|")
-    )
+    ip2region_result = ip2region_reader.searchByIPStr(ip_address).split("|")
     ip2region_result = [None if _ == "0" else _ for _ in ip2region_result]
     ip2region_location = {
         "ip": ip_address,
@@ -216,12 +214,12 @@ def get_address_from_coordinates(request: WSGIRequest) -> JsonResponse:
     latitude = request.GET.get("latitude")
     longitude = request.GET.get("longitude")
     try:
-        location = geolocator.reverse(f"{latitude}, {longitude}", language="zh-cn")
+        location = geolocator.reverse(f"{latitude}, {longitude}", language="zh-cn")  # type: ignore
     except ValueError:
         return JsonResponse({"address": None})
     if not location:
         return JsonResponse({"address": None})
-    return JsonResponse({"address": location.address})
+    return JsonResponse({"address": location.address})  # type: ignore
 
 
 def get_headers(request: WSGIRequest) -> HttpResponse:
