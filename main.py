@@ -19,6 +19,7 @@ from whitenoise import WhiteNoise
 from file_read_backwards import FileReadBackwards
 from ip2Region import Ip2Region
 import datetime
+from django.views.generic.base import TemplateView
 
 # Django server settings
 BASE_DIR = os.path.dirname(__file__)
@@ -270,6 +271,14 @@ urlpatterns = [
     path("navigator", get_navigator),
     path("whois", get_whois),
     path("more", get_more),
+    path(
+        "robots.txt",
+        TemplateView.as_view(template_name="robots.txt", content_type="text/plain"),
+    ),
+    path(
+        "ads.txt",
+        TemplateView.as_view(template_name="ads.txt", content_type="text/plain"),
+    ),
 ]
 application = get_wsgi_application()
 application = WhiteNoise(application, root="./static", prefix="static/")
