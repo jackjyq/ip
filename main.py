@@ -119,10 +119,10 @@ def get_index(request: WSGIRequest) -> HttpResponse:
         )
 
 
-def get_whois_result(ip_address: str) -> list[list[str]]:
+def get_whois_result(ip_or_host: str) -> list[list[str]]:
     whois = sh.Command("/usr/bin/whois")
     try:
-        whois_result = whois(ip_address)
+        whois_result = whois(ip_or_host)
     except sh.ErrorReturnCode:
         return [["未知", "未知"]]
     if not whois_result:
@@ -263,39 +263,42 @@ def get_navigator(request: WSGIRequest) -> HttpResponse:
     )
 
 
-def get_ip_from_url(url: str) -> Optional[str]:
+def get_host_ip_from_url(url: str) -> tuple[Optional[str], Optional[str]]:
     """get ipv4 from url(or ip address string)
 
-    return None when ip not found
+    Return
+      (host, ip)
     """
     if not url:
-        return None
+        return None, None
     # try ipv4 address
     elif is_valid_ipv4(url):
-        return url
+        return None, url
     # try valid url
     elif host := urlparse(url).netloc:
         try:
             ip = socket.gethostbyname(host)
         except (socket.gaierror, UnicodeError):
-            logger.exception(f"can not get ip from {url}")
+            pass
         else:
-            return ip
+            return host, ip
     # try host name
     else:
         try:
             ip = socket.gethostbyname(url)
         except (socket.gaierror, UnicodeError):
-            logger.exception(f"can not get ip from {url}")
+            pass
         else:
-            return ip
-    return None
+            return url, ip
+    logger.error(f"can not get ip from {url}")
+    return None, None
 
 
 def get_query(request: WSGIRequest) -> HttpResponse:
-    ip_address: Optional[str] = get_ip_from_url(request.GET.get("url", ""))
+    host, ip_address = get_host_ip_from_url(request.GET.get("url", ""))
     context: Dict = {
         "ip": ip_address,
+        "host": host,
         "country": "未知",
         "region": "未知",
         "province": "未知",
@@ -303,12 +306,16 @@ def get_query(request: WSGIRequest) -> HttpResponse:
         "isp": "未知",
         "database_name": "未知",
         "database_href": "未知",
-        "whois": [["未知", "未知"]],
+        "whois_ip": [["未知", "未知"]],
+        "whois_host": [["未知", "未知"]],
     }
     if ip_address:
         ip_location = get_ip_location(ip_address)
-        whois_result = {"whois": get_whois_result(ip_address)}
-        context = ip_location | whois_result
+        whois_ip = {"whois_ip": get_whois_result(ip_address)}
+        context |= ip_location | whois_ip
+    if host:
+        whois_host = {"whois_host": get_whois_result(host)}
+        context |= whois_host
     return render(request, "query.html", context=context)
 
 
