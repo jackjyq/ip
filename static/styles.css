@@ -101,7 +101,7 @@ label {
   min-width: calc(16px * 5);
 }
 
-input[type="text"] {
+input[type="url"] {
   all: unset;
   width: 100%;
 }

@@ -4,7 +4,7 @@
 {% endblock %} {% block main %}
 
 <section>
-    <form action="./query" method="GET">
+    <form action="./query" method="GET" novalidate>
       <label for="url">IP 或网址</label>
       <!-- the max lenght of host name is 253 -->
       <input
@@ -12,6 +12,7 @@
         name="url"
         maxlength=253
         placeholder="请输入 IP 或网址"
+        formnovalidate
         autofocus
       />
       <input type="submit" hidden />
