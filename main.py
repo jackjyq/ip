@@ -313,9 +313,10 @@ def get_query(request: WSGIRequest) -> HttpResponse:
         ip_location = get_ip_location(ip_address)
         whois_ip = {"whois_ip": get_whois_result(ip_address)}
         context |= ip_location | whois_ip
-    if host:
-        whois_host = {"whois_host": get_whois_result(host)}
-        context |= whois_host
+    # easy to get blocked if we check for host
+    # if host:
+    #     whois_host = {"whois_host": get_whois_result(host)}
+    #     context |= whois_host
     return render(request, "query.html", context=context)
 
 
