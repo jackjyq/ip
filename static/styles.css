@@ -63,7 +63,8 @@ p {
   padding: 8px 0 8px 12px;
 }
 
-ul {
+ul,
+form {
   background-color: #ffffff;
   border-radius: 12px;
   padding-left: 12px;
@@ -77,6 +78,11 @@ li {
   word-break: break-all;
 }
 
+input[type="text"] {
+  all: unset;
+  padding: 16px 0;
+}
+
 li[onClick] {
   cursor: pointer;
 }
@@ -87,6 +93,11 @@ li:not(:last-child) {
 
 li > span:nth-child(1) {
   min-width: calc(16px * 5);
+}
+
+label {
+  display: inline-block;
+  width: calc(16px * 5);
 }
 
 li > span:nth-child(2) {
