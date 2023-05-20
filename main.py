@@ -268,10 +268,12 @@ def get_ip_from_url(url: str) -> Optional[str]:
 
     return None when ip not found
     """
-    # guess url is and ipv4 address
-    if is_valid_ipv4(url):
+    if not url:
+        return None
+    # try ipv4 address
+    elif is_valid_ipv4(url):
         return url
-    # guess url is an valid url
+    # try valid url
     elif host := urlparse(url).netloc:
         try:
             ip = socket.gethostbyname(host)
@@ -279,7 +281,7 @@ def get_ip_from_url(url: str) -> Optional[str]:
             logger.exception(f"can not get ip from {url}")
         else:
             return ip
-    # guess url only contains host
+    # try host name
     else:
         try:
             ip = socket.gethostbyname(url)

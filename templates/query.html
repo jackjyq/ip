@@ -6,9 +6,11 @@
 <section>
     <form action="./query" method="GET">
       <label for="url">IP 或网址</label>
+      <!-- the max lenght of host name is 253 -->
       <input
         type="text"
         name="url"
+        maxlength=253
         placeholder="请输入 IP 或网址"
         autofocus
       />
