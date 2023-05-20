@@ -21,6 +21,9 @@ from xdbSearcher import XdbSearcher
 import datetime
 from django.views.generic.base import TemplateView
 import ipaddress
+from urllib.parse import urlparse
+from typing import Optional
+import socket
 
 # Django server settings
 BASE_DIR = os.path.dirname(__file__)
@@ -260,8 +263,35 @@ def get_navigator(request: WSGIRequest) -> HttpResponse:
     )
 
 
+def get_ip_from_url(url: str) -> Optional[str]:
+    """get ipv4 from url(or ip address string)
+
+    return None when ip not found
+    """
+    # guess url is and ipv4 address
+    if is_valid_ipv4(url):
+        return url
+    # guess url is an valid url
+    elif host := urlparse(url).netloc:
+        try:
+            ip = socket.gethostbyname(host)
+        except (socket.gaierror, UnicodeError):
+            logger.exception(f"can not get ip from {url}")
+        else:
+            return ip
+    # guess url only contains host
+    else:
+        try:
+            ip = socket.gethostbyname(url)
+        except (socket.gaierror, UnicodeError):
+            logger.exception(f"can not get ip from {url}")
+        else:
+            return ip
+    return None
+
+
 def get_query(request: WSGIRequest) -> HttpResponse:
-    ip_address: str = request.GET.get("ip", "未知")
+    ip_address: Optional[str] = get_ip_from_url(request.GET.get("url", ""))
     context: Dict = {
         "ip": ip_address,
         "country": "未知",
@@ -273,7 +303,7 @@ def get_query(request: WSGIRequest) -> HttpResponse:
         "database_href": "未知",
         "whois": [["未知", "未知"]],
     }
-    if is_valid_ipv4(ip_address):
+    if ip_address:
         ip_location = get_ip_location(ip_address)
         whois_result = {"whois": get_whois_result(ip_address)}
         context = ip_location | whois_result

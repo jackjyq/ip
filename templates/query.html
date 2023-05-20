@@ -5,18 +5,11 @@
 
 <section>
     <form action="./query" method="GET">
-      <!-- https://stackoverflow.com/a/54796814
-          match IPv4
-          -->
-      <label for="ip">IP 地址</label>
+      <label for="url">IP 或网址</label>
       <input
         type="text"
-        name="ip"
-        minlength="7"
-        maxlength="15"
-        size="15"
-        placeholder="请输入 IP 地址"
-        pattern="^((\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$"
+        name="url"
+        placeholder="请输入 IP 或网址"
         autofocus
       />
       <input type="submit" hidden />
@@ -26,6 +19,10 @@
 <section>
   <h1>归属地</h1>
   <ul>
+    <li>
+      <span>IP 地址</span>
+      <span>{{ ip }}</span>
+    </li>
     <li>
       <span>网络提供商</span>
       <span>{{ isp }}</span>
