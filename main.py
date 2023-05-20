@@ -20,6 +20,7 @@ from file_read_backwards import FileReadBackwards
 from xdbSearcher import XdbSearcher
 import datetime
 from django.views.generic.base import TemplateView
+import ipaddress
 
 # Django server settings
 BASE_DIR = os.path.dirname(__file__)
@@ -74,6 +75,14 @@ geolite2_reader = geoip2.database.Reader("./ip_data/GeoLite2/GeoLite2-City.mmdb"
 geolocator = Nominatim(user_agent="ip.jackjyq.com")
 
 
+def is_valid_ipv4(ip_address: str) -> bool:
+    try:
+        ipaddress.IPv4Address(ip_address)
+        return True
+    except ipaddress.AddressValueError:
+        return False
+
+
 def get_index(request: WSGIRequest) -> HttpResponse:
     ip_address: str = get_ip_address(request)
     ip_location: Dict = get_ip_location(ip_address)
@@ -105,6 +114,17 @@ def get_index(request: WSGIRequest) -> HttpResponse:
             "index.html",
             response | {"visits": get_number_visits(datetime.timedelta(days=1))},
         )
+
+
+def get_whois_result(ip_address: str) -> list[list[str]]:
+    whois = sh.Command("/usr/bin/whois")
+    try:
+        whois_result = whois(ip_address)
+    except sh.ErrorReturnCode:
+        return [["未知", "未知"]]
+    if not whois_result:
+        return [["未知", "未知"]]
+    return [line.split(": ", 2) for line in whois_result.splitlines()]
 
 
 def get_ip_address(request: WSGIRequest) -> str:
@@ -240,16 +260,32 @@ def get_navigator(request: WSGIRequest) -> HttpResponse:
     )
 
 
+def get_query(request: WSGIRequest) -> HttpResponse:
+    ip_address: str = request.GET.get("ip", "未知")
+    context: Dict = {
+        "ip": ip_address,
+        "country": "未知",
+        "region": "未知",
+        "province": "未知",
+        "city": "未知",
+        "isp": "未知",
+        "database_name": "未知",
+        "database_href": "未知",
+        "whois": [["未知", "未知"]],
+    }
+    if is_valid_ipv4(ip_address):
+        ip_location = get_ip_location(ip_address)
+        whois_result = {"whois": get_whois_result(ip_address)}
+        context = ip_location | whois_result
+    return render(request, "query.html", context=context)
+
+
 def get_whois(request: WSGIRequest) -> HttpResponse:
-    ip = get_ip_address(request)
-    whois = sh.Command("/usr/bin/whois")
-    whois_info = whois(ip)
-    if not whois_info:
-        whois_info = "No whois information found."
+    ip_address = get_ip_address(request)
     return render(
         request,
         "whois.html",
-        context={"whois": [line.split(": ", 2) for line in whois_info.splitlines()]},
+        context={"whois": get_whois_result(ip_address)},
     )
 
 
@@ -269,6 +305,7 @@ urlpatterns = [
     path("navigator", get_navigator),
     path("whois", get_whois),
     path("more", get_more),
+    path("query", get_query),
     path(
         "robots.txt",
         TemplateView.as_view(template_name="robots.txt", content_type="text/plain"),

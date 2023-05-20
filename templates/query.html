@@ -1,0 +1,64 @@
+{% extends "base.html" %} {% load static %} {%block nav %}
+<div class="left"><a href="../">&lt; 后退</a></div>
+<header>查询 IP 信息</header>
+{% endblock %} {% block main %}
+<form action="./query" method="GET">
+  <!-- https://stackoverflow.com/a/54796814
+  match IPv4
+  -->
+  <input
+    type="text"
+    name="ip"
+    minlength="7"
+    maxlength="15"
+    size="15"
+    pattern="^((\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$"
+  />
+  <input type="submit" />
+</form>
+<section>
+  <h1>IP 归属地</h1>
+  <ul>
+    <li>
+      <span>IP 地址</span>
+      <span>{{ ip }}</span>
+    </li>
+    <li>
+      <span>网络提供商</span>
+      <span>{{ isp }}</span>
+    </li>
+    <li>
+      <span>归属地</span>
+      <span>{{ country }}, {{ province }}, {{ city }}</span>
+    </li>
+  </ul>
+  <p>
+    IP 归属地数据源:
+    <a href="{{ database_href }}">{{ database_name }}</a>
+  </p>
+</section>
+<section id="whois">
+  <h1>Whois 信息</h1>
+  <ul>
+    {% for line in whois %}
+    <li>
+      <span> {{ line.0 }} </span>
+      <span> {{ line.1 }} </span>
+    </li>
+
+    {% endfor %}
+  </ul>
+</section>
+{% endblock %} {% block footer %}
+<p>
+  <a href="https://gitee.com/songyustudio/ip/blob/master/README.md">API 文档</a>
+</p>
+<p>
+  <a href="https://gitee.com/songyustudio/ip">码云</a> |
+  <a href="https://github.com/jackjyq/ip">Github</a>
+</p>
+<p>
+  MIT License © 2022
+  <a href="https://www.jackjyq.com">松鱼工作室</a>
+</p>
+{% endblock %}

@@ -34,9 +34,18 @@ nav header {
   padding-top: 20px;
 }
 
-nav div {
+nav div.left {
   position: absolute;
-  padding-top: 20px;
+  font-size: 16px;
+  padding-top: 24px;
+}
+
+nav div.right {
+  position: absolute;
+  right: 16px; /* padding-left of nav */
+  top: 0;
+  font-size: 16px;
+  padding-top: 24px;
 }
 
 main {
