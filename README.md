@@ -27,13 +27,15 @@ POST: https://ip.jackjyq.com/ips
 ```json
 {
   "ips": ["127.0.0.1", "114.114.114.114", "8.8.8.8"],
-  // database 选项
-  // both: 默认值，返回完整
-  // ip2region: 速度快，请求数量大
-  // GeoLite2: 可选
   "database": "both"
 }
 ```
+
+database 选项：
+
+- both: 默认值，返回完整
+- ip2region: 速度快，请求数量大
+- GeoLite2: 可选
 
 返回:
 
