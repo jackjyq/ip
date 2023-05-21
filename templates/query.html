@@ -3,19 +3,19 @@
 <header>查询 IP 信息</header>
 {% endblock %} {% block main %}
 <section>
-    <form action="./query" method="GET" novalidate>
-      <label for="url">IP 或网址</label>
-      <!-- the max lenght of host name is 253 -->
-      <input
-        type="url"
-        name="url"
-        maxlength=253
-        placeholder="请输入 IP 或网址"
-        formnovalidate
-        autofocus
-      />
-      <input type="submit" hidden />
-  </ul>
+  <form action="./query" method="GET" novalidate>
+    <label for="url">IP 或网址</label>
+    <!-- the max lenght of host name is 253 -->
+    <input
+      type="url"
+      name="url"
+      maxlength="253"
+      placeholder="请输入 IP 或网址"
+      formnovalidate
+      autofocus
+    />
+    <input type="submit" hidden />
+  </form>
 </section>
 <section>
   <h1>归属地</h1>
@@ -32,11 +32,16 @@
       <span>归属地</span>
       <span>{{ country }}, {{ province }}, {{ city }}</span>
     </li>
+    {% if host %}
     <li>
       <span>主机名</span>
       <span>{{ host }}</span>
     </li>
+    {% endif %}
   </ul>
+  {% if host %}
+  <p>注: 主机名可能对应多个 IP, 我们只显示了其中一个</p>
+  {% endif %}
   <p>
     IP 归属地数据源:
     <a href="{{ database_href }}">{{ database_name }}</a>
@@ -66,16 +71,4 @@
   </ul>
   <p>信息来源: whois {{ ip }}</p>
 </section>
-{% endblock %} {% block footer %}
-<p>
-  <a href="https://gitee.com/songyustudio/ip/blob/master/README.md">API 文档</a>
-</p>
-<p>
-  <a href="https://gitee.com/songyustudio/ip">码云</a> |
-  <a href="https://github.com/jackjyq/ip">Github</a>
-</p>
-<p>
-  MIT License © 2022
-  <a href="https://www.jackjyq.com">松鱼工作室</a>
-</p>
 {% endblock %}
