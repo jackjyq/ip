@@ -2,7 +2,6 @@
 <div class="left"><a href="../">&lt; 后退</a></div>
 <header>查询 IP 信息</header>
 {% endblock %} {% block main %}
-
 <section>
     <form action="./query" method="GET" novalidate>
       <label for="url">IP 或网址</label>
@@ -18,7 +17,6 @@
       <input type="submit" hidden />
   </ul>
 </section>
-
 <section>
   <h1>归属地</h1>
   <ul>
@@ -55,8 +53,8 @@
     {% endfor %}
   </ul>
   <p>信息来源: whois {{ host }}</p>
-</section>
-<section> -->
+</section> -->
+<section>
   <h1>更多主机信息</h1>
   <ul>
     {% for line in whois_ip %}

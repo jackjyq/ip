@@ -86,6 +86,59 @@ def is_valid_ipv4(ip_address: str) -> bool:
         return False
 
 
+def get_ips(request: WSGIRequest) -> JsonResponse:
+    """get ips by POST API
+
+    request body:
+        {
+            "ips": []
+            "databases": choose from both, ip2region, GeoLite2
+        }
+
+    benchmark
+    on macbook pro 2019
+        - maxmind query speed: 1.5s per 10k request
+        - ip2region query speed: 0.1s per 10k request
+    """
+    NUNMBER_OF_IPS = {
+        "both": 666,
+        "ip2region": 10000,
+        "GeoLite2": 666,
+    }
+    if request.method != "POST":
+        return JsonResponse({"error": "Only POST is allowed"}, status=405)
+    try:
+        data = json.loads(request.body)
+    except json.JSONDecodeError:
+        return JsonResponse({"error": "Invalid JSON"}, status=400)
+    if not isinstance(data, dict):
+        return JsonResponse({"error": "POST body shall be a dict"}, status=400)
+    if "ips" not in data:
+        return JsonResponse({"error": "POST body shall contain 'ips'"}, status=400)
+    if not isinstance(data["ips"], list):
+        return JsonResponse({"error": "POST body['ips'] shall be a list"}, status=400)
+    if not all(isinstance(ip, str) for ip in data["ips"]):
+        return JsonResponse(
+            {"error": "POST body['ips'] shall be a list of str"}, status=400
+        )
+    database = data.get("database", "both")
+    if database not in ["both", "ip2region", "GeoLite2"]:
+        database = "both"
+    if len(data["ips"]) > NUNMBER_OF_IPS[database]:
+        return JsonResponse(
+            {"error": "POST body['ips'] for {database} be less than {NUNMBER_OF_IPS}"},
+            status=400,
+        )
+    logger.info(f"API: {json.dumps(data, ensure_ascii=False, sort_keys=True)}")
+    return JsonResponse(
+        {
+            ip: get_ip_location(ip, database=database)
+            for ip in data["ips"]
+            if is_valid_ipv4(ip)
+        }
+    )
+
+
 def get_index(request: WSGIRequest) -> HttpResponse:
     ip_address: str = get_ip_address(request)
     ip_location: Dict = get_ip_location(ip_address)
@@ -183,15 +236,10 @@ def get_number_visits(times: datetime.timedelta) -> int:
     return number_visits
 
 
-def get_ip_location(ip_address: str) -> Dict:
-    """query the ip location
-
-    None when the field is unknown
-    """
-    # use ip2region database to get the country name
+def get_ip_location_from_ip2region(ip_address: str) -> Dict:
     ip2region_result = ip2region_reader.searchByIPStr(ip_address).split("|")
     ip2region_result = [None if _ == "0" else _ for _ in ip2region_result]
-    ip2region_location = {
+    return {
         "ip": ip_address,
         "country": ip2region_result[0],
         "region": ip2region_result[1],
@@ -201,31 +249,62 @@ def get_ip_location(ip_address: str) -> Dict:
         "database_name": "ip2region",
         "database_href": "https://gitee.com/lionsoul/ip2region/",
     }
-    # try GeoLite2 database for ip address that is not in China
-    if ip2region_location["country"] != "中国":
-        try:
-            geolite2_result = geolite2_reader.city(ip_address)
-            geolite2_location = {
-                "ip": ip_address,
-                "country": geolite2_result.country.names.get(
-                    "zh-CN", geolite2_result.country.name
-                ),
-                "region": None,
-                "province": geolite2_result.subdivisions.most_specific.names.get(
-                    "zh-CN", geolite2_result.subdivisions.most_specific.name
-                ),
-                "city": geolite2_result.city.names.get(
-                    "zh-CN", geolite2_result.city.name
-                ),
-                "isp": None,
-                "database_name": "GeoLite2",
-                "database_href": "https://www.maxmind.com/",
-            }
-            return geolite2_location
-        except AddressNotFoundError:
-            pass
-    # otherwise, fall back to use ip2region database
-    return ip2region_location
+
+
+def get_ip_location_from_geolite2(ip_address: str) -> Dict:
+    try:
+        geolite2_result = geolite2_reader.city(ip_address)
+        geolite2_location = {
+            "ip": ip_address,
+            "country": geolite2_result.country.names.get(
+                "zh-CN", geolite2_result.country.name
+            ),
+            "region": None,
+            "province": geolite2_result.subdivisions.most_specific.names.get(
+                "zh-CN", geolite2_result.subdivisions.most_specific.name
+            ),
+            "city": geolite2_result.city.names.get("zh-CN", geolite2_result.city.name),
+            "isp": None,
+            "database_name": "GeoLite2",
+            "database_href": "https://www.maxmind.com/",
+        }
+    except AddressNotFoundError:
+        geolite2_location = {
+            "ip": ip_address,
+            "country": None,
+            "region": None,
+            "province": None,
+            "city": None,
+            "isp": None,
+            "database_name": "GeoLite2",
+            "database_href": "https://www.maxmind.com/",
+        }
+    return geolite2_location
+
+
+def get_ip_location(ip_address: str, database: str = "both") -> Dict:
+    """query the ip location
+
+    Args:
+        ip_address: the ip address to query
+        database: "both", "ip2region", "GeoLite2"
+
+    None when the field is unknown
+    """
+    if database == "ip2region":
+        return get_ip_location_from_ip2region(ip_address)
+    elif database == "GeoLite2":
+        return get_ip_location_from_geolite2(ip_address)
+    else:  # database == "both"
+        # use ip2region database to get the country name
+        ip2region_location = get_ip_location_from_ip2region(ip_address)
+        # try GeoLite2 database for ip address that is not in China
+        if ip2region_location["country"] != "中国":
+            geolite2_location = get_ip_location_from_geolite2(ip_address)
+            if geolite2_location["country"]:
+                return geolite2_location
+        # fall back to ip2region database
+        return ip2region_location
 
 
 def get_address_from_coordinates(request: WSGIRequest) -> JsonResponse:
@@ -346,6 +425,7 @@ urlpatterns = [
     path("whois", get_whois),
     path("more", get_more),
     path("query", get_query),
+    path("ips", get_ips),
     path(
         "robots.txt",
         TemplateView.as_view(template_name="robots.txt", content_type="text/plain"),
