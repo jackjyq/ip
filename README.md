@@ -94,7 +94,7 @@ chmod +x download_ip_data.sh
 DEBUG=True python main.py runserver
 
 # 或
-gunicorn main
+gunicorn --workers 3 --worker-class=gevent main
 ```
 
 ## 数据源
