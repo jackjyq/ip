@@ -167,7 +167,7 @@ def get_index(request: WSGIRequest) -> HttpResponse:
     ):
         logger.info(f"TEXT: {json.dumps(response, ensure_ascii=False, sort_keys=True)}")
         return HttpResponse(
-            get_text_response(response), content_type="text/plain", charset="utf-8"
+            get_text_response(response), content_type="text/html; charset=UTF-8", charset="utf-8"
         )
     else:
         logger.info(f"Web: {json.dumps(response, ensure_ascii=False, sort_keys=True)}")
