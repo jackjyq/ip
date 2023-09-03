@@ -160,9 +160,15 @@ def get_index(request: WSGIRequest) -> HttpResponse:
             response,
             json_dumps_params={"ensure_ascii": False, "indent": 2},
         )
-    elif user_agent["user_agent"].startswith("curl") or "text" in request.path:
+    elif (
+        user_agent["user_agent"].startswith("curl")
+        or "PowerShell" in user_agent["user_agent"]
+        or "text" in request.path
+    ):
         logger.info(f"TEXT: {json.dumps(response, ensure_ascii=False, sort_keys=True)}")
-        return HttpResponse(get_text_response(response), content_type="text/plain")
+        return HttpResponse(
+            get_text_response(response), content_type="text/plain", charset="utf-8"
+        )
     else:
         logger.info(f"Web: {json.dumps(response, ensure_ascii=False, sort_keys=True)}")
         return render(
