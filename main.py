@@ -55,28 +55,56 @@ settings.configure(
     STATIC_URL="/static/",
 )
 
-# logger settings
-logger = logging.getLogger(__name__)
-logger.setLevel(level=logging.DEBUG)
-formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
 
-handler = logging.FileHandler("django.log")
-handler.setLevel(logging.INFO)
-handler.setFormatter(formatter)
-logger.addHandler(handler)
+def get_logger() -> logging.Logger:
+    logger = logging.getLogger(__name__)
+    logger.setLevel(level=logging.DEBUG)
+    formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
 
-console = logging.StreamHandler()
-console.setLevel(logging.DEBUG)
-logger.addHandler(console)
+    handler = logging.FileHandler("django.log")
+    handler.setLevel(logging.INFO)
+    handler.setFormatter(formatter)
+    logger.addHandler(handler)
+
+    console = logging.StreamHandler()
+    console.setLevel(logging.DEBUG)
+    logger.addHandler(console)
+    return logger
+
+
+LOGGER = get_logger()
+
+
+def get_number_visits(times: datetime.timedelta) -> int:
+    """get the number of visits from log file
+
+    Returns:
+        number of visits in the past times
+    """
+    number_visits = 0
+    with FileReadBackwards("./django.log", encoding="utf-8") as frb:
+        # getting lines by lines starting from the last line up
+        for line in frb:
+            try:
+                line_time = datetime.datetime.strptime(
+                    line.split(" - ")[0], "%Y-%m-%d %H:%M:%S,%f"
+                )
+            except ValueError:
+                continue
+            if datetime.datetime.now() - line_time < times:
+                number_visits += 1
+            else:
+                break
+    return number_visits
 
 
 # Other services initialization
 # https://github.com/lionsoul2014/ip2region
-ip2region_reader = XdbSearcher("./ip_data/ip2region/ip2region.xdb")
+IP2REGION_READER = XdbSearcher("./ip_data/ip2region/ip2region.xdb")
 # https://geoip2.readthedocs.io/en/latest/
-geolite2_reader = geoip2.database.Reader("./ip_data/GeoLite2/GeoLite2-City.mmdb")
+GEOLITE2_READER = geoip2.database.Reader("./ip_data/GeoLite2/GeoLite2-City.mmdb")
 # https://geopy.readthedocs.io/en/stable/
-geolocator = Nominatim(user_agent="ip.jackjyq.com")
+GEOLOCATOR = Nominatim(user_agent="ip.jackjyq.com")
 
 
 def is_valid_ipv4(ip_address: str) -> bool:
@@ -130,7 +158,7 @@ def get_ips(request: WSGIRequest) -> JsonResponse:
             {"error": "POST body['ips'] for {database} be less than {NUNMBER_OF_IPS}"},
             status=400,
         )
-    logger.info(f"API: {json.dumps(data, ensure_ascii=False, sort_keys=True)}")
+    LOGGER.info(f"API: {json.dumps(data, ensure_ascii=False, sort_keys=True)}")
     return JsonResponse(
         {
             ip: get_ip_location(ip, database=database)
@@ -156,7 +184,7 @@ def get_index(request: WSGIRequest) -> HttpResponse:
         return s
 
     if request.content_type == "application/json" or "json" in request.path:
-        logger.info(f"API: {json.dumps(response, ensure_ascii=False, sort_keys=True)}")
+        LOGGER.info(f"API: {json.dumps(response, ensure_ascii=False, sort_keys=True)}")
         return JsonResponse(
             response,
             json_dumps_params={"ensure_ascii": False, "indent": 2},
@@ -166,14 +194,14 @@ def get_index(request: WSGIRequest) -> HttpResponse:
         or "PowerShell" in user_agent["user_agent"]
         or "text" in request.path
     ):
-        logger.info(f"TEXT: {json.dumps(response, ensure_ascii=False, sort_keys=True)}")
+        LOGGER.info(f"TEXT: {json.dumps(response, ensure_ascii=False, sort_keys=True)}")
         return HttpResponse(
             get_text_response(response),
             content_type="text/html; charset=UTF-8",
             charset="utf-8",
         )
     else:
-        logger.info(f"Web: {json.dumps(response, ensure_ascii=False, sort_keys=True)}")
+        LOGGER.info(f"Web: {json.dumps(response, ensure_ascii=False, sort_keys=True)}")
         return render(
             request,
             "index.html",
@@ -222,31 +250,8 @@ def get_user_agent(request: WSGIRequest) -> Dict:
     }
 
 
-def get_number_visits(times: datetime.timedelta) -> int:
-    """get the number of visits from log file
-
-    Returns:
-        number of visits in the past times
-    """
-    number_visits = 0
-    with FileReadBackwards("./django.log", encoding="utf-8") as frb:
-        # getting lines by lines starting from the last line up
-        for line in frb:
-            try:
-                line_time = datetime.datetime.strptime(
-                    line.split(" - ")[0], "%Y-%m-%d %H:%M:%S,%f"
-                )
-            except ValueError:
-                continue
-            if datetime.datetime.now() - line_time < times:
-                number_visits += 1
-            else:
-                break
-    return number_visits
-
-
 def get_ip_location_from_ip2region(ip_address: str) -> Dict:
-    ip2region_result = ip2region_reader.searchByIPStr(ip_address).split("|")
+    ip2region_result = IP2REGION_READER.searchByIPStr(ip_address).split("|")
     ip2region_result = [None if _ == "0" else _ for _ in ip2region_result]
     return {
         "ip": ip_address,
@@ -262,7 +267,7 @@ def get_ip_location_from_ip2region(ip_address: str) -> Dict:
 
 def get_ip_location_from_geolite2(ip_address: str) -> Dict:
     try:
-        geolite2_result = geolite2_reader.city(ip_address)
+        geolite2_result = GEOLITE2_READER.city(ip_address)
         geolite2_location = {
             "ip": ip_address,
             "country": geolite2_result.country.names.get(
@@ -325,7 +330,7 @@ def get_address_from_coordinates(request: WSGIRequest) -> JsonResponse:
     latitude = request.GET.get("latitude")
     longitude = request.GET.get("longitude")
     try:
-        location = geolocator.reverse(f"{latitude}, {longitude}", language="zh-cn")  # type: ignore
+        location = GEOLOCATOR.reverse(f"{latitude}, {longitude}", language="zh-cn")  # type: ignore
     except ValueError:
         return JsonResponse({"address": None})
     if not location:
@@ -378,7 +383,7 @@ def get_host_ip_from_url(url: str) -> tuple[Optional[str], Optional[str]]:
             pass
         else:
             return url, ip
-    logger.error(f"can not get ip from {url}")
+    LOGGER.error(f"can not get ip from {url}")
     return None, None
 
 
