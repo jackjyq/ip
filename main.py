@@ -6,6 +6,7 @@ import os
 import socket
 import sys
 from logging.handlers import TimedRotatingFileHandler
+from pathlib import Path
 from typing import Dict, Optional
 from urllib.parse import urlparse
 
@@ -33,6 +34,41 @@ BASE_DIR = os.path.dirname(__file__)
 DEBUG = os.environ.get("DEBUG", False) == "True"  # the environ return value is str
 SECRET_KEY = os.environ.get("SECRET_KEY", os.urandom(32))
 LOG_FILE = "./django.log"
+IP2REGION_DB = "./ip_data/ip2region/ip2region.xdb"
+GEOLITE2_DB = "./ip_data/GeoLite2/GeoLite2-City.mmdb"
+WHOIS_FILE = "/usr/bin/whois"
+
+
+# sanity check
+def sanity_check():
+    ip2region_db_path = Path(IP2REGION_DB)
+    if ip2region_db_path.is_file() and os.path.getsize(ip2region_db_path) > 1024 * 1024:
+        print(f"{IP2REGION_DB} check... ✓")
+    else:
+        print(f"{IP2REGION_DB} check... x")
+        print("Run `python upgrade_ip2region.py` and try again")
+        sys.exit(1)
+
+    geolite2_db_path = Path(GEOLITE2_DB)
+    if geolite2_db_path.is_file() and os.path.getsize(geolite2_db_path) > 1024 * 1024:
+        print(f"{GEOLITE2_DB} check... ✓")
+    else:
+        print(f"{GEOLITE2_DB} check... x")
+        print(
+            "Run `chmod +x upgrade_GeoLite2.sh && ./upgrade_GeoLite2.sh` and try again"
+        )
+        sys.exit(1)
+
+    whois_path = Path(WHOIS_FILE)
+    if whois_path.is_file():
+        print(f"{WHOIS_FILE} check... ✓")
+    else:
+        print(f"{WHOIS_FILE} check... x")
+        print("Run `sudo apt install whois` and try again")
+        sys.exit(1)
+
+
+sanity_check()
 
 settings.configure(
     DEBUG=DEBUG,
@@ -105,9 +141,9 @@ def get_number_visits(times: datetime.timedelta) -> int:
 
 # Other services initialization
 # https://github.com/lionsoul2014/ip2region
-IP2REGION_READER = XdbSearcher("./ip_data/ip2region/ip2region.xdb")
+IP2REGION_READER = XdbSearcher(IP2REGION_DB)
 # https://geoip2.readthedocs.io/en/latest/
-GEOLITE2_READER = geoip2.database.Reader("./ip_data/GeoLite2/GeoLite2-City.mmdb")
+GEOLITE2_READER = geoip2.database.Reader(GEOLITE2_DB)
 # https://geopy.readthedocs.io/en/stable/
 GEOLOCATOR = Nominatim(user_agent="ip.jackjyq.com")
 
@@ -217,10 +253,10 @@ def get_index(request: WSGIRequest) -> HttpResponse:
 
 
 def get_whois_result(ip_or_host: str) -> list[list[str]]:
-    whois = sh.Command("/usr/bin/whois")
+    whois = sh.Command(WHOIS_FILE)
     try:
         whois_result = whois(ip_or_host)
-    except sh.ErrorReturnCode:
+    except (sh.ErrorReturnCode, sh.CommandNotFound):
         return [["未知", "未知"]]
     if not whois_result:
         return [["未知", "未知"]]
