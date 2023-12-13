@@ -1,11 +1,15 @@
+import datetime
+import ipaddress
 import json
 import logging
 import os
+import socket
 import sys
-from typing import Dict
-import sh
+from typing import Dict, Optional
+from urllib.parse import urlparse
+
 import geoip2.database
-from geoip2.errors import AddressNotFoundError
+import sh
 from django.conf import settings
 from django.core.handlers.wsgi import WSGIRequest
 from django.core.management import execute_from_command_line
@@ -13,21 +17,18 @@ from django.core.wsgi import get_wsgi_application
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.urls import path
+from django.views.generic.base import TemplateView
+from file_read_backwards import FileReadBackwards
+from geoip2.errors import AddressNotFoundError
 from geopy.geocoders import Nominatim
 from user_agents import parse
 from whitenoise import WhiteNoise
-from file_read_backwards import FileReadBackwards
+
 from xdbSearcher import XdbSearcher
-import datetime
-from django.views.generic.base import TemplateView
-import ipaddress
-from urllib.parse import urlparse
-from typing import Optional
-import socket
 
 # Django server settings
 BASE_DIR = os.path.dirname(__file__)
-DEBUG = os.environ.get("DEBUG", False) == "True"
+DEBUG = os.environ.get("DEBUG", False) == "True"  # the environ return value is str
 SECRET_KEY = os.environ.get("SECRET_KEY", os.urandom(32))
 
 
@@ -167,7 +168,9 @@ def get_index(request: WSGIRequest) -> HttpResponse:
     ):
         logger.info(f"TEXT: {json.dumps(response, ensure_ascii=False, sort_keys=True)}")
         return HttpResponse(
-            get_text_response(response), content_type="text/html; charset=UTF-8", charset="utf-8"
+            get_text_response(response),
+            content_type="text/html; charset=UTF-8",
+            charset="utf-8",
         )
     else:
         logger.info(f"Web: {json.dumps(response, ensure_ascii=False, sort_keys=True)}")
