@@ -5,8 +5,9 @@ import logging
 import os
 import socket
 import sys
+from functools import lru_cache
+from glob import glob
 from logging.handlers import TimedRotatingFileHandler
-from pathlib import Path
 from typing import Dict, Optional
 from urllib.parse import urlparse
 
@@ -41,16 +42,15 @@ WHOIS_FILE = "/usr/bin/whois"
 
 # sanity check
 def sanity_check():
-    ip2region_db_path = Path(IP2REGION_DB)
-    if ip2region_db_path.is_file() and os.path.getsize(ip2region_db_path) > 1024 * 1024:
+    # the size shall not be too small (< 1MB)
+    if os.path.isfile(IP2REGION_DB) and os.path.getsize(IP2REGION_DB) > 1024 * 1024:
         print(f"{IP2REGION_DB} check... ✓")
     else:
         print(f"{IP2REGION_DB} check... x")
         print("Run `python upgrade_ip2region.py` and try again")
         sys.exit(1)
 
-    geolite2_db_path = Path(GEOLITE2_DB)
-    if geolite2_db_path.is_file() and os.path.getsize(geolite2_db_path) > 1024 * 1024:
+    if os.path.isfile(GEOLITE2_DB) and os.path.getsize(GEOLITE2_DB) > 1024 * 1024:
         print(f"{GEOLITE2_DB} check... ✓")
     else:
         print(f"{GEOLITE2_DB} check... x")
@@ -59,8 +59,7 @@ def sanity_check():
         )
         sys.exit(1)
 
-    whois_path = Path(WHOIS_FILE)
-    if whois_path.is_file():
+    if os.path.isfile(WHOIS_FILE):
         print(f"{WHOIS_FILE} check... ✓")
     else:
         print(f"{WHOIS_FILE} check... x")
@@ -116,15 +115,11 @@ def get_logger() -> logging.Logger:
 LOGGER = get_logger()
 
 
-def get_number_visits(times: datetime.timedelta) -> int:
-    """get the number of visits from log file
-
-    Returns:
-        number of visits in the past times
-    """
+def get_number_visits_from_log(times: datetime.timedelta, log_file: str) -> int:
+    """get the number of visits in ONE log file, without cache"""
     number_visits = 0
-    with FileReadBackwards(LOG_FILE, encoding="utf-8") as frb:
-        # getting lines by lines starting from the last line up
+    with FileReadBackwards(log_file, encoding="utf-8") as frb:
+        # getting line by line starting from the last line up
         for line in frb:
             try:
                 line_time = datetime.datetime.strptime(
@@ -136,7 +131,30 @@ def get_number_visits(times: datetime.timedelta) -> int:
                 number_visits += 1
             else:
                 break
+
     return number_visits
+
+
+@lru_cache(maxsize=7)  # log rotation interval
+def get_number_visits_from_log_with_cache(
+    times: datetime.timedelta, log_file: str
+) -> int:
+    assert log_file != LOG_FILE, f"You shall never cache {log_file} since it is growing"
+    return get_number_visits_from_log(times, log_file)
+
+
+def get_number_visits(times: datetime.timedelta) -> int:
+    """get the number of visits from ALL log files in the past `times`
+
+    Returns:
+        number of visits in the past times
+    """
+    number_visits = get_number_visits_from_log(times=times, log_file=LOG_FILE)
+
+    # iterate log file in reverse chronological order
+    for log_file in sorted(glob(f"{LOG_FILE}.*"), reverse=True):
+        print(log_files_in_reverse_chronologically[0])
+    return 0
 
 
 # Other services initialization
