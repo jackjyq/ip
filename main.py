@@ -18,6 +18,7 @@ from django.core.wsgi import get_wsgi_application
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.urls import path
+from django.views.decorators.http import require_http_methods
 from django.views.generic.base import TemplateView
 from file_read_backwards import FileReadBackwards
 from geoip2.errors import AddressNotFoundError
@@ -119,6 +120,7 @@ def is_valid_ipv4(ip_address: str) -> bool:
         return False
 
 
+@require_http_methods(["POST"])
 def get_ips(request: WSGIRequest) -> JsonResponse:
     """get ips by POST API
 
@@ -172,6 +174,7 @@ def get_ips(request: WSGIRequest) -> JsonResponse:
     )
 
 
+@require_http_methods(["GET"])
 def get_index(request: WSGIRequest) -> HttpResponse:
     ip_address: str = get_ip_address(request)
     ip_location: Dict = get_ip_location(ip_address)
@@ -325,6 +328,7 @@ def get_ip_location(ip_address: str, database: str = "both") -> Dict:
         return ip2region_location
 
 
+@require_http_methods(["GET"])
 def get_address_from_coordinates(request: WSGIRequest) -> JsonResponse:
     """get address from coordinates
 
@@ -342,6 +346,7 @@ def get_address_from_coordinates(request: WSGIRequest) -> JsonResponse:
     return JsonResponse({"address": location.address})  # type: ignore
 
 
+@require_http_methods(["GET"])
 def get_headers(request: WSGIRequest) -> HttpResponse:
     headers = {}
     for attribute in sorted(dict(request.headers.items())):
@@ -353,6 +358,7 @@ def get_headers(request: WSGIRequest) -> HttpResponse:
     )
 
 
+@require_http_methods(["GET"])
 def get_navigator(request: WSGIRequest) -> HttpResponse:
     return render(
         request,
@@ -391,6 +397,7 @@ def get_host_ip_from_url(url: str) -> tuple[Optional[str], Optional[str]]:
     return None, None
 
 
+@require_http_methods(["GET"])
 def get_query(request: WSGIRequest) -> HttpResponse:
     host, ip_address = get_host_ip_from_url(request.GET.get("url", ""))
     context: Dict = {
@@ -417,6 +424,7 @@ def get_query(request: WSGIRequest) -> HttpResponse:
     return render(request, "query.html", context=context)
 
 
+@require_http_methods(["GET"])
 def get_whois(request: WSGIRequest) -> HttpResponse:
     ip_address = get_ip_address(request)
     return render(
@@ -426,6 +434,7 @@ def get_whois(request: WSGIRequest) -> HttpResponse:
     )
 
 
+@require_http_methods(["GET"])
 def get_more(request: WSGIRequest) -> HttpResponse:
     return render(
         request,
