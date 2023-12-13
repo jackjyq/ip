@@ -2,7 +2,7 @@
 __pycache__/
 /ip_data/
 *.log
-
+*.log.*
 
 # General
 .DS_Store
@@ -11,7 +11,6 @@ __pycache__/
 
 # Icon must end with two \r
 Icon
-
 
 # Thumbnails
 ._*

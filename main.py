@@ -5,6 +5,7 @@ import logging
 import os
 import socket
 import sys
+from logging.handlers import TimedRotatingFileHandler
 from typing import Dict, Optional
 from urllib.parse import urlparse
 
@@ -30,7 +31,7 @@ from xdbSearcher import XdbSearcher
 BASE_DIR = os.path.dirname(__file__)
 DEBUG = os.environ.get("DEBUG", False) == "True"  # the environ return value is str
 SECRET_KEY = os.environ.get("SECRET_KEY", os.urandom(32))
-
+LOG_FILE = "./django.log"
 
 settings.configure(
     DEBUG=DEBUG,
@@ -57,11 +58,14 @@ settings.configure(
 
 
 def get_logger() -> logging.Logger:
+    # https://docs.python.org/3/library/logging.handlers.html#timedrotatingfilehandler
     logger = logging.getLogger(__name__)
     logger.setLevel(level=logging.DEBUG)
     formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
 
-    handler = logging.FileHandler("django.log")
+    handler = TimedRotatingFileHandler(
+        LOG_FILE, when="D", backupCount=7, encoding="utf-8", utc=True
+    )
     handler.setLevel(logging.INFO)
     handler.setFormatter(formatter)
     logger.addHandler(handler)
@@ -82,7 +86,7 @@ def get_number_visits(times: datetime.timedelta) -> int:
         number of visits in the past times
     """
     number_visits = 0
-    with FileReadBackwards("./django.log", encoding="utf-8") as frb:
+    with FileReadBackwards(LOG_FILE, encoding="utf-8") as frb:
         # getting lines by lines starting from the last line up
         for line in frb:
             try:
