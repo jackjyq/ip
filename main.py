@@ -100,7 +100,7 @@ def get_logger() -> logging.Logger:
     formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
 
     handler = TimedRotatingFileHandler(
-        LOG_FILE, when="D", backupCount=7, encoding="utf-8", utc=True
+        LOG_FILE, when="D", backupCount=3, encoding="utf-8", utc=True
     )
     handler.setLevel(logging.INFO)
     handler.setFormatter(formatter)
