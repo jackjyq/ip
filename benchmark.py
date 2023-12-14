@@ -1,9 +1,12 @@
 import timeit
 
+number_tests = 100000
+
 print(
-    timeit.timeit(
+    number_tests
+    / timeit.timeit(
         "get_ip_location('1.1.1.1')",
         setup="from main import get_ip_location",
-        number=100000,
+        number=number_tests,
     )
 )

@@ -40,8 +40,7 @@ GEOLITE2_DB = "./ip_data/GeoLite2/GeoLite2-City.mmdb"
 WHOIS_FILE = "/usr/bin/whois"
 
 
-# sanity check
-def sanity_check():
+def boot_check():
     # the size shall not be too small (< 1MB)
     if os.path.isfile(IP2REGION_DB) and os.path.getsize(IP2REGION_DB) > 1024 * 1024:
         print(f"{IP2REGION_DB} check... ✓")
@@ -67,7 +66,7 @@ def sanity_check():
         sys.exit(1)
 
 
-sanity_check()
+boot_check()
 
 settings.configure(
     DEBUG=DEBUG,
