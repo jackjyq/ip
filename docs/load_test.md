@@ -101,3 +101,9 @@ CPU usage is about 35%
 ### benchmark test
 
 3241 query per second
+
+## add an lru cache
+
+could reduce the CPU to 30%
+
+the bottle neck of CPU is essentially on Nginx part

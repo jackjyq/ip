@@ -5,7 +5,6 @@ import logging
 import os
 import socket
 import sys
-from functools import lru_cache
 from glob import glob
 from logging.handlers import TimedRotatingFileHandler
 from typing import Dict, Optional
@@ -13,6 +12,7 @@ from urllib.parse import urlparse
 
 import geoip2.database
 import sh
+from cachetools.func import lru_cache, ttl_cache
 from django.conf import settings
 from django.core.handlers.wsgi import WSGIRequest
 from django.core.management import execute_from_command_line
@@ -269,6 +269,7 @@ def get_index(request: WSGIRequest) -> HttpResponse:
         )
 
 
+@ttl_cache()
 def get_whois_result(ip_or_host: str) -> list[list[str]]:
     whois = sh.Command(WHOIS_FILE)
     try:
@@ -356,7 +357,7 @@ def get_ip_location_from_geolite2(ip_address: str) -> Dict:
     return geolite2_location
 
 
-@lru_cache(maxsize=1024)
+@lru_cache(maxsize=1024)  # the ip location query is stable, thus do not need TTL
 def get_ip_location(ip_address: str, database: str = "both") -> Dict:
     """query the ip location
 
@@ -382,6 +383,21 @@ def get_ip_location(ip_address: str, database: str = "both") -> Dict:
         return ip2region_location
 
 
+@ttl_cache()
+def get_address(latitude: str | None, longitude: str | None) -> str | None:
+    """get address from geo location by GEOLOCATOR
+
+    return None if error happens or no address found
+    """
+    try:
+        location = GEOLOCATOR.reverse(f"{latitude}, {longitude}", language="zh-cn")  # type: ignore
+    except (ValueError, GeocoderUnavailable):
+        return None
+    if not location:
+        return None
+    return location.address  # type: ignore
+
+
 @require_http_methods(["GET"])
 def get_address_from_coordinates(request: WSGIRequest) -> JsonResponse:
     """get address from coordinates
@@ -391,13 +407,8 @@ def get_address_from_coordinates(request: WSGIRequest) -> JsonResponse:
     """
     latitude = request.GET.get("latitude")
     longitude = request.GET.get("longitude")
-    try:
-        location = GEOLOCATOR.reverse(f"{latitude}, {longitude}", language="zh-cn")  # type: ignore
-    except (ValueError, GeocoderUnavailable):
-        return JsonResponse({"address": None})
-    if not location:
-        return JsonResponse({"address": None})
-    return JsonResponse({"address": location.address})  # type: ignore
+    address = get_address(latitude, longitude)
+    return JsonResponse({"address": address})  # type: ignore
 
 
 @require_http_methods(["GET"])
