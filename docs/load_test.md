@@ -97,3 +97,7 @@ CPU usage is about 35%
         "shortest_transaction":                 0.65
 }
 ```
+
+### benchmark test
+
+3241 query per second

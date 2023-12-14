@@ -5,6 +5,7 @@ import logging
 import os
 import socket
 import sys
+from functools import lru_cache
 from glob import glob
 from logging.handlers import TimedRotatingFileHandler
 from typing import Dict, Optional
@@ -355,6 +356,7 @@ def get_ip_location_from_geolite2(ip_address: str) -> Dict:
     return geolite2_location
 
 
+@lru_cache(maxsize=1024)
 def get_ip_location(ip_address: str, database: str = "both") -> Dict:
     """query the ip location
 
