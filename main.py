@@ -5,7 +5,6 @@ import logging
 import os
 import socket
 import sys
-from functools import lru_cache
 from glob import glob
 from logging.handlers import TimedRotatingFileHandler
 from typing import Dict, Optional
@@ -24,6 +23,7 @@ from django.views.decorators.http import require_http_methods
 from django.views.generic.base import TemplateView
 from file_read_backwards import FileReadBackwards
 from geoip2.errors import AddressNotFoundError
+from geopy.exc import GeocoderUnavailable
 from geopy.geocoders import Nominatim
 from user_agents import parse
 from whitenoise import WhiteNoise
@@ -135,14 +135,6 @@ def get_number_visits_from_log(times: datetime.timedelta, log_file: str) -> int:
     return number_visits
 
 
-@lru_cache(maxsize=7)  # log rotation interval
-def get_number_visits_from_log_with_cache(
-    times: datetime.timedelta, log_file: str
-) -> int:
-    assert log_file != LOG_FILE, f"You shall never cache {log_file} since it is growing"
-    return get_number_visits_from_log(times, log_file)
-
-
 def get_number_visits(times: datetime.timedelta) -> int:
     """get the number of visits from ALL log files in the past `times`
 
@@ -153,8 +145,15 @@ def get_number_visits(times: datetime.timedelta) -> int:
 
     # iterate log file in reverse chronological order
     for log_file in sorted(glob(f"{LOG_FILE}.*"), reverse=True):
-        print(log_files_in_reverse_chronologically[0])
-    return 0
+        if (
+            number_visits_of_current_log_file := get_number_visits_from_log(
+                times=times, log_file=log_file
+            )
+        ) == 0:
+            break
+        else:
+            number_visits += number_visits_of_current_log_file
+    return number_visits
 
 
 # Other services initialization
@@ -393,7 +392,7 @@ def get_address_from_coordinates(request: WSGIRequest) -> JsonResponse:
     longitude = request.GET.get("longitude")
     try:
         location = GEOLOCATOR.reverse(f"{latitude}, {longitude}", language="zh-cn")  # type: ignore
-    except ValueError:
+    except (ValueError, GeocoderUnavailable):
         return JsonResponse({"address": None})
     if not location:
         return JsonResponse({"address": None})
