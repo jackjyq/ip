@@ -94,14 +94,16 @@ settings.configure(
 
 
 def get_logger() -> logging.Logger:
-    # https://docs.python.org/3/library/logging.handlers.html#timedrotatingfilehandler
+    """NOTE: Do NOT rotate the log
+
+    https://docs.python.org/3/library/logging.handlers.html#timedrotatingfilehandler
+    https://docs.python.org/3/howto/logging-cookbook.html#logging-to-a-single-file-from-multiple-processes
+    """
     logger = logging.getLogger(__name__)
     logger.setLevel(level=logging.DEBUG)
     formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
 
-    handler = TimedRotatingFileHandler(
-        LOG_FILE, when="D", backupCount=3, encoding="utf-8", utc=True
-    )
+    handler = logging.FileHandler(LOG_FILE)
     handler.setLevel(logging.INFO)
     handler.setFormatter(formatter)
     logger.addHandler(handler)
