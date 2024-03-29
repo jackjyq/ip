@@ -35,6 +35,10 @@ geoip2==4.8.0
     # via ip
 geopy==2.4.1
     # via ip
+gevent==24.2.1
+    # via ip
+greenlet==3.0.3
+    # via gevent
 gunicorn==21.2.0
     # via ip
 idna==3.6
@@ -49,13 +53,14 @@ packaging==24.0
     # via gunicorn
 requests==2.31.0
     # via geoip2
+    # via ip
 setuptools==69.2.0
     # via geoip2
+    # via zope-event
+    # via zope-interface
 sh==2.0.6
     # via ip
 sqlparse==0.4.4
-    # via django
-tzdata==2024.1
     # via django
 ua-parser==0.18.0
     # via user-agents
@@ -67,3 +72,7 @@ whitenoise==6.6.0
     # via ip
 yarl==1.9.4
     # via aiohttp
+zope-event==5.0
+    # via gevent
+zope-interface==6.2
+    # via gevent

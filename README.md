@@ -1,6 +1,6 @@
 # [考拉 IP 归属地](https://ip.jackjyq.com/)
 
-![](./static/favicon_io/android-chrome-192x192.png)
+![](./src/ip/static/favicon_io/android-chrome-192x192.png)
 
 查询我的 IP 地址、归属地、设备类型、操作系统、浏览器版本、屏幕分辨率、经纬度、地理位置等。
 
@@ -78,11 +78,10 @@ database 选项：
 
 ### 系统要求
 
-**操作系统**：
+![](https://img.shields.io/badge/Ubuntu-22%20LTS-orange)
+![](https://img.shields.io/badge/macOS-Sonoma-white)
 
-兼容 Ubuntu 22 LTS、Ubuntu 22 LTS for WSL2、macOS
-
-因用到 [sh](https://pypi.org/project/sh/) 而不兼容 Windows.
+因用到 [sh](https://pypi.org/project/sh/) 而不兼容 Windows. 此外，由于大陆网路原因，`查看 Whois 信息` 功能或不可用。
 
 ### 安装
 
@@ -93,10 +92,10 @@ database 选项：
 rye sync
 
 # 更新 ip2region 数据库
-待补充
+python upgrade_ip2region.py
 
 # 更新 GeoLite2 数据库
-待补充
+chmod +x upgrade_GeoLite2.sh && ./upgrade_GeoLite2.sh
 
 # 安装 whois
 sudo apt install whois
