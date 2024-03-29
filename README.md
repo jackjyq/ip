@@ -4,19 +4,52 @@
 
 查询我的 IP 地址、归属地、设备类型、操作系统、浏览器版本、屏幕分辨率、经纬度、地理位置等。
 
+## 快速开始
+
+![](https://img.shields.io/badge/Ubuntu-22%20LTS-orange)
+![](https://img.shields.io/badge/macOS-Sonoma-white)
+
+注：因用到 [sh](https://pypi.org/project/sh/) 而不兼容 Windows。此外，由于大陆网路原因，`查看 Whois 信息` 功能或不可用。
+
+### 安装
+
+[![Rye](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/rye/main/artwork/badge.json)](https://rye-up.com)
+
+```bash
+# 安装 Python 依赖
+rye sync
+
+# 下载 ip2region 数据库
+rye run ip2region
+
+# 下载 GeoLite2 数据库
+rye run geolite
+
+# 安装 whois
+sudo apt install whois
+```
+
+### 运行
+
+```bash
+# 调试模式
+rye run dev
+
+# 生产模式
+rye run prod
+```
+
 ## API 文档
 
 ### 我的 IP(文本格式)
 
-**HTTP GET**：https://ip.jackjyq.com/text
-
-或: `curl 'https://ip.jackjyq.com/'`
+- `curl 'https://ip.jackjyq.com/text'`
+- `curl 'https://ip.jackjyq.com/'`
 
 ### 我的 IP(JSON 格式)
 
-**HTTP GET**：https://ip.jackjyq.com/json
-
-或: `curl 'https://ip.jackjyq.com/' -H 'Content-Type: application/json'`
+- `curl 'https://ip.jackjyq.com/json'`
+- `curl 'https://ip.jackjyq.com/' -H 'Content-Type: application/json'`
 
 ### 批量查询 IP 归属地
 
@@ -29,6 +62,15 @@
   "ips": ["127.0.0.1", "114.114.114.114", "8.8.8.8"],
   "database": "both"
 }
+```
+
+**例如**:
+
+```shell
+curl -X POST -H "Content-Type: application/json" -d '{
+  "ips": ["127.0.0.1", "114.114.114.114", "8.8.8.8"],
+  "database": "both"
+}' https://ip.jackjyq.com/ips
 ```
 
 database 选项：
@@ -72,43 +114,6 @@ database 选项：
     "database_href": "https://www.maxmind.com/"
   }
 }
-```
-
-## 部署运行
-
-### 系统要求
-
-![](https://img.shields.io/badge/Ubuntu-22%20LTS-orange)
-![](https://img.shields.io/badge/macOS-Sonoma-white)
-
-因用到 [sh](https://pypi.org/project/sh/) 而不兼容 Windows. 此外，由于大陆网路原因，`查看 Whois 信息` 功能或不可用。
-
-### 安装
-
-[![Rye](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/rye/main/artwork/badge.json)](https://rye-up.com)
-
-```bash
-# 配置虚拟环境
-rye sync
-
-# 更新 ip2region 数据库
-python upgrade_ip2region.py
-
-# 更新 GeoLite2 数据库
-chmod +x upgrade_GeoLite2.sh && ./upgrade_GeoLite2.sh
-
-# 安装 whois
-sudo apt install whois
-```
-
-### 运行
-
-```bash
-# 调试模式
-rye run dev
-
-# 生产模式
-rye run sync
 ```
 
 ## 数据源

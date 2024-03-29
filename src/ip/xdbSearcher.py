@@ -6,11 +6,10 @@
 #  Copyright © 2022年 luckydog. All rights reserved.
 #
 
+import io
 import socket
 import struct
-import io
 import sys
-
 
 # xdb默认参数
 HeaderInfoLength = 256

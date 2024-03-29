@@ -40,22 +40,17 @@ GEOLITE2_DB = os.path.join(BASE_DIR, "data/GeoLite2/GeoLite2-City.mmdb")
 WHOIS_FILE = "/usr/bin/whois"
 
 
-def boot_check():
+def boot_up_check():
     # the size shall not be too small (< 1MB)
     if os.path.isfile(IP2REGION_DB) and os.path.getsize(IP2REGION_DB) > 1024 * 1024:
         print(f"{IP2REGION_DB} check... ✓")
     else:
         print(f"{IP2REGION_DB} check... x")
-        print("Run `python upgrade_ip2region.py` and try again")
         sys.exit(1)
-
     if os.path.isfile(GEOLITE2_DB) and os.path.getsize(GEOLITE2_DB) > 1024 * 1024:
         print(f"{GEOLITE2_DB} check... ✓")
     else:
         print(f"{GEOLITE2_DB} check... x")
-        print(
-            "Run `chmod +x upgrade_GeoLite2.sh && ./upgrade_GeoLite2.sh` and try again"
-        )
         sys.exit(1)
     if os.path.isfile(WHOIS_FILE):
         print(f"{WHOIS_FILE} check... ✓")
@@ -65,7 +60,7 @@ def boot_check():
         sys.exit(1)
 
 
-boot_check()
+boot_up_check()
 
 settings.configure(
     DEBUG=DEBUG,
@@ -223,7 +218,8 @@ def get_ips(request: WSGIRequest) -> JsonResponse:
             ip: get_ip_location(ip, database=database)
             for ip in data["ips"]
             if is_valid_ipv4(ip)
-        }
+        },
+        json_dumps_params={"ensure_ascii": False, "indent": 2},
     )
 
 
@@ -408,7 +404,10 @@ def get_address_from_coordinates(request: WSGIRequest) -> JsonResponse:
     latitude = request.GET.get("latitude")
     longitude = request.GET.get("longitude")
     address = get_address(latitude, longitude)
-    return JsonResponse({"address": address})  # type: ignore
+    return JsonResponse(
+        {"address": address},
+        json_dumps_params={"ensure_ascii": False, "indent": 2},
+    )  # type: ignore
 
 
 @require_http_methods(["GET"])
