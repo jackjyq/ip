@@ -64,6 +64,12 @@ rye run prod
 }
 ```
 
+database 选项：
+
+- both: 默认值，返回完整
+- ip2region: 速度快，请求数量大
+- GeoLite2: 可选
+
 **例如**:
 
 ```shell
@@ -72,12 +78,6 @@ curl -X POST -H "Content-Type: application/json" -d '{
   "database": "both"
 }' https://ip.jackjyq.com/ips
 ```
-
-database 选项：
-
-- both: 默认值，返回完整
-- ip2region: 速度快，请求数量大
-- GeoLite2: 可选
 
 **返回**:
 
