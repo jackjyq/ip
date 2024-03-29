@@ -80,28 +80,23 @@ database 选项：
 
 **操作系统**：
 
-实测：兼容 Ubuntu 22 LTS、Ubuntu 22 LTS for WSL2、macOS
+兼容 Ubuntu 22 LTS、Ubuntu 22 LTS for WSL2、macOS
 
-理论：因用到 [sh](https://pypi.org/project/sh/) 而不兼容 Windows.
-
-**Python 版本**：
-
-实测: Python 3.10
-
-理论: 不清楚
+因用到 [sh](https://pypi.org/project/sh/) 而不兼容 Windows.
 
 ### 安装
 
+[![Rye](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/rye/main/artwork/badge.json)](https://rye-up.com)
+
 ```bash
 # 配置虚拟环境
-python3.10 -m venv venv
-pip install -r requirements.txt
+rye sync
 
 # 更新 ip2region 数据库
-python upgrade_ip2region.py
+待补充
 
 # 更新 GeoLite2 数据库
-chmod +x upgrade_GeoLite2.sh && ./upgrade_GeoLite2.sh
+待补充
 
 # 安装 whois
 sudo apt install whois
@@ -111,10 +106,10 @@ sudo apt install whois
 
 ```bash
 # 调试模式
-DEBUG=True python main.py runserver
+rye run dev
 
 # 生产模式
-gunicorn --workers 3 --worker-class=gevent main
+rye run sync
 ```
 
 ## 数据源

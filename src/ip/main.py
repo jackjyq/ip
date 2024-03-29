@@ -6,7 +6,6 @@ import os
 import socket
 import sys
 from glob import glob
-from logging.handlers import TimedRotatingFileHandler
 from typing import Dict, Optional
 from urllib.parse import urlparse
 
@@ -29,15 +28,15 @@ from geopy.geocoders import Nominatim
 from user_agents import parse
 from whitenoise import WhiteNoise
 
-from xdbSearcher import XdbSearcher
+from ip.xdbSearcher import XdbSearcher
 
 # Django server settings
 BASE_DIR = os.path.dirname(__file__)
 DEBUG = os.environ.get("DEBUG", False) == "True"  # the environ return value is str
 SECRET_KEY = os.environ.get("SECRET_KEY", os.urandom(32))
 LOG_FILE = "./django.log"
-IP2REGION_DB = "./ip_data/ip2region/ip2region.xdb"
-GEOLITE2_DB = "./ip_data/GeoLite2/GeoLite2-City.mmdb"
+IP2REGION_DB = "./src/ip/data/ip2region/ip2region.xdb"
+GEOLITE2_DB = "./src/ip/data/GeoLite2/GeoLite2-City.mmdb"
 WHOIS_FILE = "/usr/bin/whois"
 
 
@@ -58,7 +57,6 @@ def boot_check():
             "Run `chmod +x upgrade_GeoLite2.sh && ./upgrade_GeoLite2.sh` and try again"
         )
         sys.exit(1)
-
     if os.path.isfile(WHOIS_FILE):
         print(f"{WHOIS_FILE} check... ✓")
     else:
@@ -103,7 +101,7 @@ def get_logger() -> logging.Logger:
     logger.setLevel(level=logging.DEBUG)
     formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
 
-    handler = logging.FileHandler(LOG_FILE)
+    handler = logging.FileHandler(LOG_FILE, encoding="utf-8")
     handler.setLevel(logging.INFO)
     handler.setFormatter(formatter)
     logger.addHandler(handler)

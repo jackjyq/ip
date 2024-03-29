@@ -1,0 +1,38 @@
+[project]
+name = "ip"
+version = "0.1.0"
+description = "Add your description here"
+authors = [
+    { name = "Jack Jiang", email = "jackjyq@outlook.com" }
+]
+dependencies = [
+    "django>=5.0.3",
+    "geoip2>=4.8.0",
+    "sh>=2.0.6",
+    "cachetools>=5.3.3",
+    "file-read-backwards>=3.0.0",
+    "geopy>=2.4.1",
+    "user-agents>=2.2.0",
+    "whitenoise>=6.6.0",
+    "gunicorn>=21.2.0",
+]
+readme = "README.md"
+requires-python = ">= 3.8"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.rye]
+managed = true
+dev-dependencies = []
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/ip"]
+
+[tool.rye.scripts]
+dev = { cmd = "python ./src/ip/main.py runserver", env = { DEBUG="True" } }
+prod = { cmd = "gunicorn --workers 3 --worker-class=gevent main" }
