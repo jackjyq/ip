@@ -31,12 +31,12 @@ from whitenoise import WhiteNoise
 from ip.xdbSearcher import XdbSearcher
 
 # Django server settings
-BASE_DIR = os.path.dirname(__file__)
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 DEBUG = os.environ.get("DEBUG", False) == "True"  # the environ return value is str
 SECRET_KEY = os.environ.get("SECRET_KEY", os.urandom(32))
 LOG_FILE = "./django.log"
-IP2REGION_DB = "./src/ip/data/ip2region/ip2region.xdb"
-GEOLITE2_DB = "./src/ip/data/GeoLite2/GeoLite2-City.mmdb"
+IP2REGION_DB = os.path.join(BASE_DIR, "data/ip2region/ip2region.xdb")
+GEOLITE2_DB = os.path.join(BASE_DIR, "data/GeoLite2/GeoLite2-City.mmdb")
 WHOIS_FILE = "/usr/bin/whois"
 
 
@@ -528,7 +528,9 @@ urlpatterns = [
     ),
 ]
 application = get_wsgi_application()
-application = WhiteNoise(application, root="./static", prefix="static/")
+application = WhiteNoise(
+    application, root=os.path.join(BASE_DIR, "static/"), prefix="static/"
+)
 
 if __name__ == "__main__":
     execute_from_command_line(sys.argv)
