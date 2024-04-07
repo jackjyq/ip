@@ -9,7 +9,7 @@ if __name__ == "__main__":
     )
     resp.raise_for_status()
 
-    folder = "./src/ip/data/ip2region"
+    folder = "./src/data/ip2region"
     os.makedirs(folder, exist_ok=True)
     with open(os.path.join(folder, "ip2region.xdb"), "wb") as f:
         f.write(resp.content)

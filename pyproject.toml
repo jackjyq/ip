@@ -20,6 +20,7 @@ dependencies = [
 ]
 readme = "README.md"
 requires-python = ">= 3.10"
+urls = { "repository" = "https://github.com/jackjyq/ip"}
 
 [build-system]
 requires = ["hatchling"]
@@ -33,13 +34,13 @@ dev-dependencies = []
 allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/ip"]
+packages = ["src"]
 
 [tool.rye.scripts]
-dev = { cmd = "python ./src/ip/main.py runserver", env = { DEBUG="True" } }
-prod = { cmd = "gunicorn --workers 3 --worker-class=gevent src.ip.main" }
-geolite2 = { cmd = "bash -c ./src/ip/update_geolite2.sh"}
-ip2region = { cmd = "python ./src/ip/update_ip2region.py"}
+dev = { cmd = "python ./src/main.py runserver", env = { DEBUG="True" } }
+prod = { cmd = "gunicorn --workers 3 --worker-class=gevent src.main" }
+geolite2 = { cmd = "bash -c ./src/update_geolite2.sh"}
+ip2region = { cmd = "python ./src/update_ip2region.py"}
 
 [tool.ruff]
-exclude = ["./src/ip/xdbSearcher.py"]
+exclude = ["./src/xdbSearcher.py"]

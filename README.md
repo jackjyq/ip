@@ -1,6 +1,6 @@
 # [考拉 IP 归属地](https://ip.jackjyq.com/)
 
-![](./src/ip/static/favicon_io/android-chrome-192x192.png)
+![](./src/static/favicon_io/android-chrome-192x192.png)
 
 查询我的 IP 地址、归属地、设备类型、操作系统、浏览器版本、屏幕分辨率、经纬度、地理位置等。
 
