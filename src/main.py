@@ -27,8 +27,7 @@ from geopy.exc import GeocoderUnavailable
 from geopy.geocoders import Nominatim
 from user_agents import parse
 from whitenoise import WhiteNoise
-
-from . import xdbSearcher
+from xdbSearcher import XdbSearcher
 
 # Django server settings
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
