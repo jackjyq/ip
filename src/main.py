@@ -5,6 +5,7 @@ import logging
 import os
 import socket
 import sys
+import time
 from glob import glob
 from typing import Dict, Optional
 from urllib.parse import urlparse
@@ -165,6 +166,14 @@ def is_valid_ipv4(ip_address: str) -> bool:
         return True
     except ipaddress.AddressValueError:
         return False
+
+
+@require_http_methods(["GET"])
+def get_timestamp(request: WSGIRequest) -> JsonResponse:
+    return JsonResponse(
+        {"timestamp": time.time_ns()},
+        json_dumps_params={"ensure_ascii": False, "indent": 2},
+    )
 
 
 @require_http_methods(["POST"])
@@ -516,6 +525,7 @@ urlpatterns = [
     path("more", get_more),
     path("query", get_query),
     path("ips", get_ips),
+    path("timestamp", get_timestamp),
     path(
         "robots.txt",
         TemplateView.as_view(template_name="robots.txt", content_type="text/plain"),

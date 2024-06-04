@@ -23,7 +23,7 @@ rye sync
 rye run ip2region
 
 # 下载 GeoLite2 数据库
-rye run geolite
+rye run geolite2
 
 # 安装 whois
 sudo apt install whois
