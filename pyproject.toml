@@ -2,9 +2,7 @@
 name = "ip"
 version = "0.1.0"
 description = "https://github.com/jackjyq/ip"
-authors = [
-    { name = "Jack Jiang", email = "jackjyq@outlook.com" }
-]
+authors = [{ name = "Jack Jiang", email = "jackjyq@outlook.com" }]
 dependencies = [
     "django>=5.0.3",
     "geoip2>=4.8.0",
@@ -20,27 +18,7 @@ dependencies = [
 ]
 readme = "README.md"
 requires-python = ">= 3.10"
-urls = { "repository" = "https://github.com/jackjyq/ip"}
-
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
-
-[tool.rye]
-managed = true
-dev-dependencies = []
-
-[tool.hatch.metadata]
-allow-direct-references = true
-
-[tool.hatch.build.targets.wheel]
-packages = ["src"]
-
-[tool.rye.scripts]
-dev = { cmd = "python ./src/main.py runserver", env = { DEBUG="True" } }
-prod = { cmd = "gunicorn --workers 3 --worker-class=gevent src.main" }
-geolite2 = { cmd = "bash -c ./src/update_geolite2.sh"}
-ip2region = { cmd = "python ./src/update_ip2region.py"}
+urls = { "repository" = "https://github.com/jackjyq/ip" }
 
 [tool.ruff]
 exclude = ["./src/xdbSearcher.py"]

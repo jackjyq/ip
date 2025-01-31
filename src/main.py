@@ -28,7 +28,7 @@ from geopy.exc import GeocoderUnavailable
 from geopy.geocoders import Nominatim
 from user_agents import parse
 from whitenoise import WhiteNoise
-from xdbSearcher import XdbSearcher
+from src.xdbSearcher import XdbSearcher
 
 # Django server settings
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -293,6 +293,7 @@ def get_ip_address(request: WSGIRequest) -> str:
     Refs:
       s  https://stackoverflow.com/a/5976065
     """
+    print('META', request.META.get('REMOTE_ADDR'))
     if x_forwarded_for := request.META.get("HTTP_X_FORWARDED_FOR"):
         ip_address = x_forwarded_for.split(",")[-1].strip()
     else:

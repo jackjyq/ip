@@ -13,17 +13,17 @@
 
 ### 安装
 
-[![Rye](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/rye/main/artwork/badge.json)](https://rye-up.com)
+[![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://docs.astral.sh/uv/getting-started/installation/)
 
 ```bash
 # 安装 Python 依赖
-rye sync
+uv sync
 
 # 下载 ip2region 数据库
-rye run ip2region
+uv run ./src/update_ip2region.py
 
 # 下载 GeoLite2 数据库
-rye run geolite2
+bash -c ./src/update_geolite2.sh
 
 # 安装 whois
 sudo apt install whois
@@ -33,10 +33,10 @@ sudo apt install whois
 
 ```bash
 # 调试模式
-rye run dev
+DEBUG="True" uv run ./src/main.py runserver
 
 # 生产模式
-rye run prod
+uv run gunicorn --workers 3 --worker-class=gevent src.main
 ```
 
 ## API 文档
