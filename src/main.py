@@ -291,11 +291,10 @@ def get_ip_address(request: WSGIRequest) -> str:
     Returns:
         "0.0.0.0" if not found
     Refs:
-      s  https://stackoverflow.com/a/5976065
+        https://stackoverflow.com/a/5976065
     """
-    print('META', request.META.get('REMOTE_ADDR'))
     if x_forwarded_for := request.META.get("HTTP_X_FORWARDED_FOR"):
-        ip_address = x_forwarded_for.split(",")[-1].strip()
+        ip_address = x_forwarded_for.split(",")[0].strip()
     else:
         ip_address = request.META.get("REMOTE_ADDR", "0.0.0.0")
     return ip_address
